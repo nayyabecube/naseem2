@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <report
+            id="report_for_naseem_delivery_order" 
+            model="stock.picking"
+            name="naseem_delivery_order.module_report"
+            file="naseem_delivery_order.module_report"
+            report_type="qweb-html"
+            string="Delivery Order"/>
+
+		<record id="stock_picking_extension" model="ir.ui.view"> 
+		    <field name="name">stock_picking_extension</field> 
+		    <field name="model">stock.picking</field> 
+		    <field name="inherit_id" ref="stock.view_picking_form"/> 
+		    <field name="arch" type="xml"> 
+		        <header>
+	         		<button name="%(report_for_naseem_delivery_order)d" string="Print DO" type="action" class="btn-primary" attrs="{'invisible': [('state', 'not in',('partially_available','assigned','waiting_approve'))]}" />
+	         	</header>
+	        </field>
+
+	    </record>
+
+    </data>
+</openerp>

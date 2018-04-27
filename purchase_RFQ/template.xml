@@ -1,0 +1,1063 @@
+<?xml version="1.0"?> 
+<odoo> 
+    <data>
+        <record id="purchase.purchase_order_form" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="arch" type="xml">
+                <form string="Purchase Order">
+                <header>
+                    <button name="generate_wizard" string="Add Products" type="object" class="oe_highlight" attrs="{'invisible':[('state','not in','draft')]}" context="{'default_sale_boolean': 1}"/>
+                    <button name="action_rfq_send" states="draft" string="Send RFQ by Email" type="object" context="{'send_rfq':True}" class="oe_highlight"/>
+                    <button name="action_rfq_send" states="sent" string="Re-Send RFQ by Email" type="object" context="{'send_rfq':True}"/>
+                    <!-- <button name="print_quotation" string="Print RFQ" type="object" states="draft" class="oe_highlight" groups="base.group_user"/> -->
+                    <!-- <button name="print_quotation" string="Print RFQ" type="object" states="sent" groups="base.group_user"/> -->
+                    <button name="button_confirm" type="object" states="draft" string="Confirm Order" id="draft_confirm"/>
+                    <button name="button_confirm" type="object" states="sent" string="Confirm Order" class="oe_highlight" id="bid_confirm"/>
+                    <button name="button_approve" type="object" states='to approve' string="Approve Order" class="oe_highlight" groups="purchase.group_purchase_manager"/>
+                    <button name="action_rfq_send" states="purchase" string="Send PO by Email" type="object" context="{'send_rfq':False}"/>
+                    <!-- <button name="action_view_picking" string="Receive Products" class="oe_highlight" type="object" attrs="{'invisible': ['|', '|' , ('is_shipped', '=', True), ('state','not in', ('purchase','done')), ('picking_count', '=', 0)]}"/> -->
+                    <button name="button_draft" states="cancel" string="Set to Draft" type="object" />
+                    <button name="button_cancel" states="draft,to approve,sent,purchase" string="Cancel" type="object" />
+                    <!-- <button name="button_done" type="object" string="Lock" states="purchase"/ >-->
+                    <button name="average_price_product" type="object" string="Update Average Price"/>
+                    <button name="button_unlock" type="object" string="Unlock" states="done" groups="purchase.group_purchase_manager"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,purchase" readonly="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object"
+                            name="action_view_picking"
+                            class="oe_stat_button"
+                            icon="fa-truck" attrs="{'invisible':[('state', 'in', ('draft','sent','to approve')),('picking_ids','=',[])]}" invisible ="1">
+                            <field name="picking_count" widget="statinfo" string="Shipment" help="Incoming Shipments"/>
+                            <field name="picking_ids" invisible="1"/>
+                        </button>
+                        <button type="object"  name="action_view_invoice"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o" attrs="{'invisible':[('state', 'in', ('draft','sent','to approve')),('invoice_ids','=',[])]}" invisible = "1">
+                            <field name="invoice_count" widget="statinfo" string="Vendor Bills"/>
+                            <field name='invoice_ids' invisible="1"/>
+                        </button> 
+                    </div>
+                    <div class="oe_title">
+                        <label string="Request for Quotation " attrs="{'invisible': [('state','not in',('draft','sent','bid'))]}"/>
+                        <label string="Purchase Order " attrs="{'invisible': [('state','in',('draft','sent','bid'))]}"/>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id" context="{'search_default_supplier':1, 'default_supplier':1, 'default_customer':0}" string="Supplier" domain="[('supplier','=',True)]" attrs="{'readonly':[('state','not in','draft')]}" options="{'no_create': True}"/>
+                            <field name="partner_ref" attrs="{'readonly':[('state','not in','draft')]}"/>
+                            <field name="currency_id" attrs="{'readonly':[('state','not in','draft')]}" groups="base.group_multi_currency" widget="selection"/>
+                            <field name="is_shipped" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="date_order" attrs="{'readonly':[('state','not in','draft')]}"/>
+                            <field name="is_complete" invisible="1"/>
+
+                            <field name="origin" attrs="{'invisible': [('origin','=',False)], 'readonly':[('state','not in','draft')]}"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Products">
+                            <field name="order_line" attrs="{'readonly':[('state','not in','draft')]}">
+                                 <tree string="Purchase Order Lines" editable="bottom">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="state" invisible="1"/>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="product_id" attrs="{'readonly': [('state', 'in', ('purchase', 'to approve','done', 'cancel'))]}" context="{'partner_id':parent.partner_id, 'quantity':product_qty,'uom':product_uom, 'company_id': parent.company_id}" />
+                                    <field name="name"/>
+                                    <field name="date_planned"/>
+                                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                                    <field name="account_analytic_id" context="{'default_partner_id':parent.partner_id}" groups="purchase.group_analytic_accounting"/>
+                                    <field name="analytic_tag_ids" groups="purchase.group_analytic_accounting" widget="many2many_tags"/>
+                                    <field name="product_qty"/>
+                                    <field name="qty_received" invisible="1"/>
+                                    <field name="qty_invoiced" invisible="1"/>
+                                    <field name="product_uom" groups="product.group_uom" attrs="{'readonly': [('state', 'in', ('purchase', 'done', 'cancel'))]}"/>
+                                    <field name="unit_price_dollar"/>
+                                    <field name="subtotal_dollar" readonly = "1"/>
+                                    <field name="price_unit" invisible ="1"/>
+                                    <field name="ecube_unit_price"/>
+                                    <field name="taxes_id" widget="many2many_tags" domain="[('type_tax_use','=','purchase')]" context="{'default_type_tax_use': 'purchase'}"/>
+                                    <field name="price_subtotal" widget="monetary" invisible ="1"/>
+                                    <field name="ecube_subtotal" />
+                                    
+                                </tree>
+                                <form string="Purchase Order Line">
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="product_id"
+                                                       context="{'partner_id': parent.partner_id}"/>
+                                                <label for="product_qty"/>
+                                                <div>
+                                                    <field name="product_qty" class="oe_inline"/>
+                                                    <span class="oe_inline">&#160;</span>
+                                                    <field name="product_uom" groups="product.group_uom" class="oe_inline"/>
+                                                </div>
+                                                <field name="price_unit"/>
+                                            </group>
+                                            <group>
+                                                <field name="taxes_id" widget="many2many_tags" domain="[('type_tax_use', '=', 'purchase')]"/>
+                                                <field name="date_planned" widget="date"/>
+                                                <field name="account_analytic_id" colspan="2" groups="purchase.group_analytic_accounting"/>
+                                                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                                            </group>
+                                        </group>
+                                        <notebook>
+                                        <page string="Notes">
+                                            <field name="name"/>
+                                        </page><page string="Invoices and Incoming Shipments">
+                                            <field name="invoice_lines"/>
+                                            <field name="move_ids"/>
+                                        </page>
+                                        </notebook>
+                                    </sheet>
+                                </form>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}" string="Total Amount" invisible = "1"/>
+                                <field name="ecube_total_amount" readonly = "1"/>
+                                <field name="fc_total_amount" readonly = "1"/>
+                                <field name="fc_discount" />
+                                <field name="amount_tax" widget="monetary" options="{'currency_field': 'currency_id'}" invisible = "1"/>
+                                <div class="oe_subtotal_footer_separator oe_inline" invisible = "1">
+                                    <label for="amount_total" invisible = "1"/>
+                                </div>
+                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}" invisible = "1"/>
+                            </group>
+                            <field name="notes" class="oe_inline" placeholder="An administrator can set up default Terms and conditions in your Company settings."/>
+                            <div class="oe_clear"/>
+                        </page>
+                        <page name="purchase_deliveries_tab" string="Deliveries &amp; Invoices">
+                            <group>
+                                <group>
+                                    <label for="date_planned"/>
+                                    <div>
+                                        <field name="date_planned" required="1" attrs="{'readonly': [('state', 'not in', ('draft', 'sent'))]}"/>
+                                        <button name="action_set_date_planned" type="object"
+                                            states="draft,sent"
+                                            string="Set date to all order lines"
+                                            help="This changes the scheduled date of all order lines to the given date"
+                                            class="fa fa-calendar o_icon_button oe_edit_only"/>
+                                    </div>
+                                    <field name="picking_type_id" domain="[('code','=','incoming')]" options="{'no_create': True}" groups="stock.group_stock_multi_locations"/>
+                                    <field name="dest_address_id" groups="stock.group_stock_multi_locations" attrs="{'invisible': [('default_location_dest_id_usage', '!=', 'customer')], 'required': [('default_location_dest_id_usage', '=', 'customer')]}"/>
+                                    <field name="default_location_dest_id_usage" invisible="1"/>
+                                    <field name="incoterm_id"/>
+                                </group>
+                                <group>
+                                    <field name="invoice_status"/>
+                                    <field name="payment_term_id" options="{'no_open': True, 'no_create': True}" attrs="{'readonly': ['|', ('invoice_status','=', 'invoiced'), ('state', '=', 'done')]}"/>
+                                    <field name="fiscal_position_id" attrs="{'readonly': ['|', ('invoice_status','=', 'invoiced'), ('state', '=', 'done')]}"/>
+                                    <field name="date_approve" groups="base.group_no_one"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+
+
+       <record id="purchase_order_extention_view" model="ir.ui.view">
+            <field name="name">purchase_order_extention_view</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+
+            <header>
+               
+                <xpath expr="//button[@name='generate_wizard']" position="after">
+                    <button name="complete_order" string="Complete" type="object" class="oe_highlight"/>
+                </xpath>
+
+            </header>
+
+                <xpath expr="//field[@name='order_line']/tree/field[@name='date_planned']" position="replace">
+                    <field name="date_planned" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="replace">
+                    <field name="vendor_desc"/>
+                    <field name="name" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_qty']" position="after">
+                    <field name="carton"/>
+                    <field name="last_purchase" readonly = "1"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_qty']" position="replace">
+                    <field name="product_qty" string="Quantity(pcs)"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='taxes_id']" position="replace">
+                    <field name="taxes_id" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position="after">
+                    <field name="pkr_unit_cost" readonly ="1"/>
+                    <field name="qty_hand"/>
+                    <field name="avg_unit_price" readonly = "1"/>
+                    <field name="avg_status"/>
+                </xpath>
+
+                <xpath expr="//page[@name='purchase_deliveries_tab']" position="replace">
+                    <page name="LC_costing" string="LC Costing">
+                         <h4>Punched TT's</h4>
+                         <field name="lc_costing_link" readonly = "1">
+                            <tree editable="bottom" >
+                                <field name="tt_serial"/>
+                                <field name="tt_reference"/>
+                                <field name="date"/>
+                                <field name="changer" />
+                                <field name="amount" sum="total"/>
+                                <field name="conversion_rate"/>
+                                <field name="bank_charges" sum="total"/>
+                                <field name="with_holding_tax" sum="total"/>
+                                <field name="total_amount" sum="total"/>
+                                <field name="costing_link" sum="total"/>
+                            </tree>
+                        </field> 
+                        <h4>Other Expense</h4>
+                        <group class="oe_subtotal_footer oe_right">
+                                <button name="submitt_expense" type="object" class="oe_highlight" string="Submitt"  />
+                        </group>   
+                        <field name="other_expense_link">
+                            <tree editable="bottom">
+                                <field name="expense_date" attrs="{'readonly':[('status','=',True)]}"/>
+                                <field name="expense_type" widget="selection" attrs="{'readonly':[('status','=',True)]}" />
+                                <field name="vendor_name" domain="['|',('check_supplier', '=', True),('check_forwarder', '=', True)]" widget="selection" attrs="{'readonly':[('status','=',True)]}"/>
+                                <field name="bank_type" widget="selection" attrs="{'readonly':[('status','=',True)]}" invisible = "1"/>
+                                <field name="check_no" attrs="{'readonly':[('status','=',True)]}" invisible = "1"/>
+                                <field name="description" attrs="{'readonly':[('status','=',True)]}"/>
+                                <field name="amount" sum="total" attrs="{'readonly':[('status','=',True)]}"/>
+                                <field name="status"/>
+                                <field name="move_id" invisible = "1"/>
+                            </tree>
+                        </field> 
+
+                        <group class="oe_subtotal_footer oe_right">
+                            <field name="tt_total_amount" invisible="1"/>
+                            <field name="per_dollar_cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <div class="oe_subtotal_footer_separator oe_inline">
+                                <label for="amount_total_footer" string="Grand Total"/>
+                            </div>
+                            <field name="amount_total_footer" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary"/>
+                        </group>      
+                    </page>
+
+                </xpath>
+
+                <xpath expr="//page[@name='LC_costing']" position="after">
+                    <page name="document_attachments" string="Shipping Documents">
+                         <field name="shipping_doc_link" >
+                            <tree editable="bottom">
+                                <field name="doc_desc" required="1"/>
+                                <field name="doc_attachment" required="1"/>
+                            </tree>
+                        </field>  
+                    </page>
+
+                </xpath>                
+
+                <xpath expr="//page[@name='document_attachments']" position="after">
+                    <page string="Shipping Info" name="shipping_info">
+                                      <group name="group_top">
+                        <group name="group_right">
+                            <field name="performa"/>
+                            <field name="port"/>
+                            <field name="loading_port"/>
+                            <field name="eta_ship" invisible = "1"/>
+                            <field name="etd_khi" invisible = "1"/>
+                            <field name="net_weight"/>
+                            <field name="gross_weight"/>
+                            <field name="cbm_ship"/>
+                            <field name="bl_no" attrs="{'invisible':[('ship_mode','=','byair')]}"/>
+                            <field name="bl_date" attrs="{'invisible':[('ship_mode','=','byair')]}"/>
+                            <field name="container"/>
+                            <field name="vessel"/>
+                        </group>
+                        <group name="group_left">
+                            <field name="bank_account" widget="selection"/>
+                            <field name="awb_date" attrs="{'invisible':['|',('ship_mode','=','bysea'),('ship_mode','=','byland')]}"/>
+                            <field name="e_form_no"/>
+                            <field name="form_e_date"/>
+                            <field name="ship_mark"/>
+                            <field name="sro"/>
+                            <field name="s_tax_serial"/>
+                            <field name="ship_mode" />
+                            <field name="container_size" />
+                            <field name="awb_no" attrs="{'invisible':['|',('ship_mode','=','bysea'),('ship_mode','=','byland')]}"/>
+                        </group>
+                    </group>
+                    </page>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="vendor_id" readonly = "1"/>
+                    <field name="contact" readonly = "1"/>
+                    <field name="adress" readonly = "1"/>
+                </xpath>
+                 <xpath expr="//field[@name='date_order']" position="after">
+                    <field name="scheduled_date" attrs="{'readonly':[('state','not in','draft')]}" string = "ETD"/>
+                    <field name="departure_date" attrs="{'readonly':[('state','not in','draft')]}" string = "ETA"/>
+                </xpath>
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="ship_line" widget="selection" attrs="{'readonly':[('state','not in','draft')]}"/>
+                    <field name="picking_type_id" domain="[('code','=','incoming')]" options="{'no_create': True}" groups="stock.group_stock_multi_locations"/>
+                </xpath>
+                <xpath expr="//field[@name='departure_date']" position="after">
+                    <field name="incoterm" widget="selection" groups="base.group_user" attrs="{'readonly':[('state','not in','draft')]}"/>
+                    <field name="payment_term_method" widget="selection" groups="base.group_user" attrs="{'readonly':[('state','not in','draft')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_ref']" position="after">
+                    <field name="transporter" widget="selection" groups="base.group_user" domain="[('check_trans', '=', True)]" attrs="{'readonly':[('state','not in','draft')]}"/>
+                    <field name="forwarder" widget="selection" groups="base.group_user" domain="[('check_forwarder', '=', True)]" attrs="{'readonly':[('state','not in','draft')]}"/>
+                    <field name="clearing_agent"  widget="selection" groups="base.group_user" domain="[('check_clearing_agent', '=', True)]" attrs="{'readonly':[('state','not in','draft')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_method']" position="after">
+                    <field name="n_weight" readonly = "1" />
+                    <field name="g_weight" readonly = "1"/>
+                    <field name="CBM" readonly = "1"/>
+                    <field name="carton_qty" readonly = "1"/>
+                    <field name="fc_rate" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="ETA" attrs="{'readonly':[('state','not in','draft')]}" invisible = "1"/>
+                    <field name="ETD" attrs="{'readonly':[('state','not in','draft')]}" invisible = "1"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_ref']" position="replace">
+                    <field name="partner_ref" string="Supplier Invoice No." attrs="{'readonly':[('state','not in','draft')]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase.purchase_form_action" model="ir.actions.act_window">
+            <field name="name">Purchase Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.order</field>
+            <field name="view_mode">tree,kanban,form,pivot,graph,calendar</field>
+            <field name="context">{'search_default_todo':1, 'show_purchase': True,'readonly_by_pass': True}</field>
+            <field name="domain">[('state','not in',('draft','sent','bid', 'confirmed'))]</field>
+            <field name="search_view_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a quotation that will be converted into a purchase order. 
+              </p><p>
+                Use this menu to search within your purchase orders by
+                references, vendor, products, etc. For each purchase order,
+                you can track the related discussion with the vendor, control
+                the products received and control the vendor bills.
+              </p>
+            </field>
+        </record>
+
+        <record id="purchase.purchase_rfq" model="ir.actions.act_window">
+            <field name="name">Requests for Quotation</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.order</field>
+            <field name="context">{'search_default_todo':1,'readonly_by_pass': True}</field>
+            <field name="domain">[('state','in',('draft','sent','bid','cancel', 'confirmed'))]</field>
+            <field name="view_mode">tree,kanban,form,pivot,graph,calendar</field>
+            <field name="search_view_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a request for quotation.
+              </p><p>
+                The quotation contains the history of the discussion/negotiation
+                you had with your vendor. Once confirmed, a request for
+                quotation is converted into a purchase order.
+              </p><p>
+                Most propositions of purchase orders are created automatically
+                by Odoo based on inventory needs.
+              </p>
+            </field>
+        </record>
+
+    <record id="lc_costing_form_view" model="ir.ui.view">
+        <field name="name">lc_costing_form_view</field>
+        <field name="model">tt.lc.costing</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <!-- <button name="return_tt" string="Return" type="object" class="oe_highlight"/> -->
+                    <button name="validate_tt" string="Post" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ('done', 'cancel'))]}"/>
+                     <button name="done_tt" string="Done" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ('draft', 'done','cancel'))]}"/>
+                    <button name="cancel_tt" string="Cancel" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ('draft', 'validate','cancel'))]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,validate,done,cancel"/>
+                </header>
+                <sheet>
+                    <group name="group_top">
+                        <group name="group_left">
+                            <field name="tt_serial" readonly = "1"/>
+                            <field name="supplier_name" domain="[('supplier','=',True)]"  widget="selection" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="changer" widget="selection" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                        </group>
+                        <group name="group_right">
+                            <field name="tt_reference" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="date" attrs="{'readonly': [('state', '=', 'done')]}"/>
+
+                        </group>
+                    </group>
+                    <group name="tt_amount" >
+                        <group name="tt_amount_left" string="TT Amount">
+                            <field name="amount" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="conversion_rate" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="bank_charges" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="total_amount" readonly = "1"/>
+                        </group>
+                        <group name="with_holding_paid" string="Paid Withholding Amount">
+                            <field name="with_holding_tax" readonly = "1"/>
+                            <field name="wh_account" />
+                        </group>
+                    </group>
+                    <group name="paid_amount_tt" >
+                        <group name="paid_amount_tt_left" string="Paid Amount and Balance">
+                            <field name="amount_pkr" readonly = "1"/>
+                            <field name="balance" readonly = "1"/>
+                             <field name="supplier_entry_id"/>
+                        </group>
+                        <group name="paid_amount_tt_right" string="Paid Amount and Balance FC">
+                            <field name="adjusted_fc" readonly = "1"/>
+                            <field name="balance_fc" readonly = "1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="tt_tree" string="Paid Amount">
+                            <field name="tt_lc_costing_link" attrs="{'readonly': [('state', '=', 'done')]}">
+                                <tree editable="top">
+                                    <field name="journal" domain="['|',('bank', '=', True),('cash', '=', True)]" options="{'no_create': True}"/>
+                                    <!-- <field name="cheque_no_to" attrs="{'readonly':[('posted','=',True)]}"/> -->
+                                    <field name="cheque_no"  domain="[('issued','!=','False'),('bank','=',journal)]" attrs = "{'required':[('cheque_boolean','=',True)]}" options="{'no_create': True}"/>
+                                    <field name="amount" sum="total" />
+                                    <field name="with_holding"  sum="total" />
+                                    <field name="posted"/>
+                                    <field name="reference"/>
+                                    <field name="entry_id"/>
+                                    <field name="cheque_boolean"/>
+                                   
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="po_details" string="Linked PO's">
+                            <field name="tt_linked_po">
+                                <tree editable="bottom">
+                                    <field name="po_no" domain="[('state','=','purchase'),('partner_id','=',parent.supplier_name)]" widget="selection" />
+                                    <field name="amount"  sum="total" />
+                                    <field name="posted" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+<!--   <record id="purchase_order_tt_tree_view" model="ir.ui.view">
+        <field name="name">purchase_order_tt_tree_view</field>
+        <field name="model">lc.costing</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Pur">
+                <field name="date" />
+                <field name="money_changer" />
+                <field name="tt" />
+                <field name="amount" />
+                <field name="conversion_rate" />
+                <field name="bank_charges" />
+                <field name="total_amount" />
+            </tree>
+        </field>
+    </record> -->
+  
+  <!-- <record id="customer_tree_view_extension" model="ir.ui.view">
+        <field name="name">customer_tree_view_extension</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='phone']" position="after">
+                <field name="mobile" />
+            </xpath>
+            <xpath expr="//field[@name='email']" position="replace">
+            </xpath>
+
+        </field>
+    </record> -->
+
+         <record id="tree_view_tt_po" model="ir.ui.view">
+            <field name="name">tree_view_tt_po</field>
+            <field name="model">tt.lc.costing</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">  
+                <field name="date"/>                   
+                <field name="tt_serial"/>
+                <field name="tt_reference"/>
+                <field name="amount"/>
+                <field name="changer"/> 
+                <field name="balance" string = "Balance PKR"/>
+                <field name="balance_fc" string = "Balance FC"/>
+
+            </field>
+        </record>
+
+
+  <record id="purchase_money_changer_tree_view" model="ir.ui.view">
+        <field name="name">purchase_money_changer_tree_view</field>
+        <field name="model">money.changer</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" required="1"/>
+                            <field name="adress" />
+                            <field name="tele_phone" />
+                            <field name="account_head" />
+                        </group>
+                    </group>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+
+    <record id="purchase_order_tree_view_extension" model="ir.ui.view">
+            <field name="name">purchase_order_tree_view_extension</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="vendor_id"/>
+                    <field name="partner_ref"/>
+                </xpath>
+                <xpath expr="//field[@name='amount_untaxed']" position="replace">
+                    <field name="ecube_total_amount"/>
+                </xpath>
+                <xpath expr="//field[@name='amount_total']" position="replace"/>
+            </field>
+        </record>
+        
+
+
+
+
+        <record id="account_journal_extention_form" model="ir.ui.view">
+            <field name="name">account_journal_extention_form</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='type']" position="after">
+                    <field name="with_holding_rate"/>
+                </xpath>
+            </field>
+        </record>
+		
+
+
+		<record id="y_hide_quotation" model="res.groups">
+            <field name="name">y_hide_quotations</field>
+        </record>
+
+         <menuitem action="sale.action_orders_to_invoice"
+            id="purchase.menu_procurement_partner_contact_form"
+            parent="y_hide_quotation"
+            sequence="2"/>
+
+         <menuitem action="sale.action_orders_to_invoice"
+            id="purchase.product_product_menu"
+            parent="y_hide_quotation"
+            sequence="2"/>
+
+       <!--  <record model="ir.actions.act_window" id="purchase_tt_configuration">
+            <field name="name">Purchase Order TT's</field>
+            <field name="res_model">lc.costing</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain" >[]</field>
+        </record>
+
+    
+        <menuitem name="Purchase Order TT's"
+            id="tt_purchase_configuration_main"
+            parent="purchase.menu_procurement_management"
+            action="purchase_tt_configuration"
+            sequence="6"/> -->
+
+
+<record id="customer_sale_action" model="ir.actions.act_window">
+            <field name="name">Customers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="domain" >[('customer', '=',True)]</field>
+            <field name="context" eval="{'default_customer':1 , 'default_check_clearing_agent': 0, 'default_check_forwarder' : 1,'check_trans':0}"/>
+            <!-- <field name="search_view_id" ref="view_res_partner_filter"/> -->
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a contact in your address book.
+              </p><p>
+                Odoo helps you easily track all activities related to
+                a customer: discussions, history of business opportunities,
+                documents, etc.
+              </p>
+            </field>
+        </record>
+
+<menuitem id="new_menu_partner" name="Customers"
+            parent="sales_team.menu_sales"
+            action="customer_sale_action" sequence="15"/>
+
+        <record model="ir.actions.act_window" id="haulage_expense_details">
+            <field name="name">Other Expense Types</field>
+            <field name="res_model">haulage.expense</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain" >[]</field>
+        </record>
+
+    
+        <menuitem name="Other Expense Details"
+            id="other_expense_main"
+            parent="purchase.menu_purchase_config"
+            sequence="1"/>
+
+        <menuitem name="Other Expense Details"
+            id="other_expense_sub_menu"
+            parent="other_expense_main"
+            action="haulage_expense_details"
+            sequence="1"/>
+
+
+
+
+        <record model="ir.actions.act_window" id="money_changer_details">
+            <field name="name">Money Changer</field>
+            <field name="res_model">money.changer</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain" >[]</field>
+        </record>
+
+    
+        <menuitem name="Money Changer"
+            id="money_changer_purchase_main"
+            parent="purchase.menu_purchase_config"
+            sequence="1"/>
+
+        <menuitem name="Money Changer"
+            id="money_changer_purchase"
+            parent="money_changer_purchase_main"
+            action="money_changer_details"
+            sequence="1"/>
+
+
+        <record model="ir.actions.act_window" id="punched_tt_details">
+            <field name="name">TT Details</field>
+            <field name="res_model">tt.lc.costing</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain" >[]</field>
+            <field name="context">{'readonly_by_pass': True}</field>
+        </record>
+
+    
+       <!--  <menuitem name="TT's"
+            id="TT_purchase_main"
+            parent="purchase.menu_purchase_config"
+            sequence="1"/> -->
+
+        <menuitem name="TT's"  
+            id="TT_purchase"
+            parent="purchase.menu_procurement_management"
+            action="punched_tt_details"
+            sequence="16"/>
+
+
+      <!--   <report
+            id="report_for_module_email" 
+            model="purchase.order"
+            name="report_for_module_email"
+            file="purchase.action_rfq_send"
+            report_type="qweb-pdf"
+            string="Send RFQ by EMAIL"/>  -->
+
+    <record model="ir.actions.act_window" id="loading_port_details">
+            <field name="name">Loading Port</field>
+            <field name="res_model">loading.port</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain" >[]</field>
+        </record>
+
+    <record model="ir.actions.act_window" id="destination_port_details">
+            <field name="name">Destination Port</field>
+            <field name="res_model">destination.port</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain" >[]</field>
+        </record>
+
+    
+        <menuitem name="Loading/Destination Ports"
+            id="loading_destination_port"
+            parent="purchase.menu_purchase_config"
+            sequence="1"/>
+
+        <menuitem name="Loading Ports"
+            id="loading_ports"
+            parent="loading_destination_port"
+            action="loading_port_details"
+            sequence="1"/>
+        <menuitem name="Destination Ports"
+            id="destination_ports"
+            parent="loading_destination_port"
+            action="destination_port_details"
+            sequence="1"/>
+
+ <record model="ir.actions.act_window" id="shipping_lines_action">
+            <field name="name">Shipping Lines</field>
+            <field name="res_model">shipping.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain" >[]</field>
+        </record>
+
+    
+        <menuitem name="Shipping Lines"
+            id="shipping_line_main"
+            parent="purchase.menu_purchase_config"
+            sequence="1"/>
+        <menuitem name="Shipping Lines"
+            id="shipping_line_sub_menu"
+            parent="shipping_line_main"
+            action="shipping_lines_action"
+            sequence="1"/>
+
+        <record id="new_supplier_action" model="ir.actions.act_window">
+            <field name="name">Supplier</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context">{'search_default_supplier': 1,'default_customer': 0,'default_supplier': 1}</field>
+            <field name="filter" eval="True"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a contact in your address book.
+              </p><p>
+                Odoo helps you easily track all activities related to
+                a supplier: discussions, history of purchases,
+                documents, etc.
+              </p>
+            </field>
+        </record>
+
+
+
+
+
+ <menuitem id="menu_from_vendor_to_supplier" name="Suppliers"
+            parent="purchase.menu_procurement_management"
+            action="new_supplier_action" sequence="15"/>
+
+   <record model="ir.actions.act_window" id="payment_configuration">
+
+      <field name="name">Cash</field>
+      <field name="res_model">account.bank.statement</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain">[('journal_id.type', '=', 'cash')]</field>
+      <field name="context">{'journal_type':'cash'}</field>
+  </record>
+
+  <record model="ir.actions.act_window" id="bank_configuration">
+
+      <field name="name">Bank</field>
+      <field name="res_model">account.bank.statement</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain">[('journal_id.type', '=', 'bank')]</field>
+      <field name="context">{'journal_type':'bank'}</field>
+  </record>
+
+  <menuitem name="Bank Payment"
+
+    id="cash_configuration_main"
+    parent="account.menu_finance"
+    sequence="1"/>
+
+  <menuitem name="Cash"
+      id="cash_sales_configuration"
+      parent="cash_configuration_main"
+      action="payment_configuration"
+      sequence="1"/>
+
+<menuitem name="Bank"
+      id="bank_sales_configuration"
+      parent="cash_configuration_main"
+      action="bank_configuration"
+      sequence="2"/>
+
+
+        <record id="view_picking_form_receipts" model="ir.ui.view">
+            <field name="name">view_picking_form_receipts</field>
+            <field name="model">stock.picking</field>
+            <field eval="12" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Transfer">
+                <header>
+                    <button name="action_confirm" states="draft" string="Mark as Todo" type="object" class="oe_highlight" groups="base.group_user"/>
+                    <button name="action_assign" states="confirmed,waiting" string="Reserve" type="object" class="oe_highlight" groups="base.group_user"/>
+                    <button name="action_assign" states="partially_available" string="Recheck Availability" type="object" groups="base.group_user"/>
+                    <button name="force_assign" states="confirmed,waiting,partially_available" string="Force Availability" type="object" groups="stock.group_stock_manager"/>
+                    <button name="do_new_transfer" states="draft,partially_available,assigned" string="Validate" groups="stock.group_stock_user" type="object" class="oe_highlight"/>
+                    <button name="do_print_picking" string="Print" groups="stock.group_stock_user" type="object" attrs="{'invisible': [('state', 'not in', ('assigned', 'partially_available'))]}"/>
+                    <button name="%(stock.action_report_delivery)d" string="Print" states="done" type="action" groups="base.group_user"/>
+                    <button name="%(stock.act_stock_return_picking)d" string="Return" states="done" type="action" groups="base.group_user"/>
+                    <button name="action_cancel" states="assigned,confirmed,partially_available,draft,waiting" string="Cancel" groups="base.group_user" type="object"/>
+                    <button name="do_unreserve" string="Unreserve" groups="base.group_user" type="object" attrs="{'invisible': [('quant_reserved_exist', '=', False)]}"/>
+                    <button name="do_prepare_partial" attrs="{'invisible': ['|', ('launch_pack_operations', '=', True), '|', ('state', 'not in', ('assigned', 'partially_available')), ('pack_operation_ids', '!=', [])]}"
+                            string="Reset Operations" type="object"/>
+                    <field name="launch_pack_operations" invisible="1"/>
+                    <button name="button_scrap" type="object" string="Scrap" attrs="{'invisible': ['|', ('state', 'in', ('draft', 'cancel')), '&amp;', ('picking_type_code', '=', 'incoming'), ('state', '!=', 'done')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <field name="has_scrap_move" invisible="True"/>
+                        <button name="action_see_move_scrap" string="Scraps" type="object"
+                            class="oe_stat_button" icon="fa-arrows-v"
+                            attrs="{'invisible': [('has_scrap_move', '=', False)]}"/>
+                    </div>
+                    <h1 class="hidden-xs">
+                        <field name="name" attrs="{'invisible': [('name','=','/')]}" readonly="1"/>
+                    </h1>
+                    <group class="hidden-xs">
+                        <group>
+                            <field name="partner_id" attrs="{'invisible': [('picking_type_code', '=', 'internal')]}"/>
+                            <field name="location_id" groups="stock.group_stock_multi_locations" attrs="{'invisible': [('picking_type_code', '=', 'outgoing')]}"/>
+                            <field name="location_dest_id" groups="stock.group_stock_multi_locations" attrs="{'invisible': [('picking_type_code', '=', 'incoming')]}"/>
+                            <field name="backorder_id" readonly="1" attrs="{'invisible': [('backorder_id','=',False)]}"/>
+                        </group>
+                        <group>
+                            <field name="min_date"/>
+                            <field name="origin" placeholder="e.g. PO0032" class="oe_inline"/>
+                            <field name="receipt" />
+                            <field name="account_inv_id" />
+                            <label for="owner_id" groups="stock.group_tracking_owner"/>
+                            <div groups="stock.group_tracking_owner">
+                                <field name="owner_id"/>
+                                <button name="action_assign_owner" string="Assign Owner" type="object" attrs="{'invisible': ['|',('pack_operation_exist', '=', False),('state', 'not in', ('draft','assigned','confirmed'))]}"
+                                    class="oe_link oe_edit_only"/>
+                            </div>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Operations" attrs="{'invisible': [('state', 'in', ('draft', 'confirmed', 'waiting'))]}">
+                            <button name="do_prepare_partial" type="object" string="Recompute" attrs="{'invisible': [('recompute_pack_op','=', False)]}"/>
+                            <field name="recompute_pack_op" invisible="1"/>
+                            <field name="pack_operation_ids" invisible="1"/>
+                            <field name="pack_operation_product_ids" options="{'reload_on_button': True}" context="{'default_picking_id': id, 'default_location_id': location_id, 'default_location_dest_id': location_dest_id}" mode="tree,kanban">
+                                <tree editable="bottom" decoration-muted="result_package_id" decoration-danger="qty_done&gt;product_qty" decoration-success="qty_done==product_qty and state!='done' and not result_package_id">
+                                    <field name="package_id" groups="stock.group_tracking_lot" invisible="1"/>
+                                    <field name="product_id" required="1" readonly = "1"/>
+                                    <field name="fresh_record" invisible="1"/>
+                                    <field name="product_uom_id" attrs="{'readonly': [('fresh_record', '=', False)]}" groups="product.group_uom"/>
+                                    <field name="lots_visible" invisible="1"/>
+                                    <field name="owner_id" groups="stock.group_tracking_owner"/>
+                                    <field name="location_id" domain="[('id', 'child_of', parent.location_id)]" invisible="1"/>
+                                    <field name="location_dest_id" domain="[('id', 'child_of', parent.location_dest_id)]" invisible="1"/>
+                                    <field name="from_loc" groups="stock.group_stock_multi_locations,stock.group_tracking_lot"/>
+                                    <field name="to_loc" groups="stock.group_stock_multi_locations,stock.group_tracking_lot"/>
+                                    <field name="result_package_id" groups="stock.group_tracking_lot" context="{'default_location_id': location_dest_id}" invisible="1"/>
+                                    <field name="state" invisible="1"/>
+                                    <field name="product_qty" readonly="1" attrs="{'required': [('product_id', '!=', False)]}"/>
+                                    <field name="qty_done" attrs="{'readonly': [('lots_visible', '=', True)]}"/>
+                                    <button name="split_lot" string="Lot Split" type="object" icon="fa-list" groups="stock.group_production_lot"
+                                            attrs="{'invisible': ['|', ('lots_visible', '=', False), ('state', 'not in', ['confirmed', 'assigned', 'waiting', 'partially_available','done'])]}"/>
+                                    <button name="show_details" string="Modify" type="object" icon="fa-pencil" groups="stock.group_stock_multi_locations"
+                                            states="confirmed,assigned,waiting,partially_available"/>
+                                </tree>
+                                <kanban class="o_kanban_mobile">
+                                    <field name="package_id" groups="stock.group_tracking_lot" invisible="1"/>
+                                    <field name="product_id" required="1" attrs="{'readonly': [('fresh_record', '=', False)]}"/>
+                                    <field name="fresh_record" invisible="1"/>
+                                    <field name="product_uom_id" attrs="{'readonly': [('fresh_record', '=', False)]}" groups="product.group_uom"/>
+                                    <field name="lots_visible" invisible="1"/>
+                                    <field name="owner_id" groups="stock.group_tracking_owner"/>
+                                    <field name="location_id" domain="[('id', 'child_of', parent.location_id)]" invisible="1"/>
+                                    <field name="location_dest_id" domain="[('id', 'child_of', parent.location_dest_id)]" invisible="1"/>
+                                    <field name="from_loc" groups="stock.group_stock_multi_locations,stock.group_tracking_lot"/>
+                                    <field name="to_loc" groups="stock.group_stock_multi_locations,stock.group_tracking_lot"/>
+                                    <field name="result_package_id" groups="stock.group_tracking_lot" context="{'default_location_id': location_dest_id}" invisible="1"/>
+                                    <field name="state" invisible="1"/>
+                                    <field name="product_qty" readonly="1" attrs="{'required': [('product_id', '!=', False)]}"/>
+                                    <field name="qty_done" attrs="{'readonly': [('lots_visible', '=', True)]}"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_card oe_kanban_global_click
+                                                               #{record.qty_done.raw_value&gt;record.product_qty.raw_value ? 'oe_kanban_color_2' : ''}
+                                                               #{record.qty_done.raw_value==record.product_qty.raw_value &amp;&amp; record.state.raw_value!='done' &amp;&amp; ! record.result_package_id.raw_value ? 'oe_kanban_color_3' : ''}">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <strong><span><t t-esc="record.product_id.value"/></span></strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-muted">
+                                                        <span><t t-esc="record.from_loc.value"/> to <t t-esc="record.to_loc.value"/></span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-muted">
+                                                        <span><t t-esc="record.qty_done.value"/> of <t t-esc="record.product_qty.value"/> <t t-esc="record.product_uom_id.value"/></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                            <field name="picking_type_entire_packs" invisible="1"/>
+                            <field name="pack_operation_pack_ids" options="{'reload_on_button': True}" attrs="{'invisible': [('pack_operation_pack_ids', '=', []), ('picking_type_entire_packs', '=', False)]}" context="{'default_picking_id': id, 'default_location_id': location_id, 'default_location_dest_id': location_dest_id, 'default_picking_id': id}" groups="stock.group_tracking_lot">
+                                <tree editable="bottom" decoration-muted="qty_done&gt;0">
+                                    <field name="package_id" required="1" string="Package To Move" domain="[('location_id', '=', location_id)]"/>
+                                    <field name="location_id" domain="[('id', 'child_of', parent.location_id)]" invisible="1"/>
+                                    <field name="from_loc" groups="stock.group_stock_multi_locations,stock.group_tracking_lot"/>
+                                    <field name="to_loc" groups="stock.group_stock_multi_locations,stock.group_tracking_lot"/>
+                                    <field name="location_dest_id" domain="[('id', 'child_of', parent.location_dest_id)]" invisible="1"/>
+                                    <field name="result_package_id" groups="stock.group_tracking_lot" context="{'default_location_id': location_dest_id}" invisible="1"/>
+                                    <field name="state" invisible="1"/>
+                                    <field name="qty_done" invisible="1"/>
+                                    <field name="lots_visible" invisible="1"/>
+                                    <field name="is_done"/>
+                                    <button name="show_details" string="Modify" type="object" icon="fa-pencil"
+                                            states="confirmed,assigned,waiting,partially_available" groups="base.group_no_one"/>
+                                </tree>
+                            </field>
+                            <button class="oe_link oe_right" name="put_in_pack" type="object" string="&#8627;Put in Pack" attrs="{'invisible': [('state', 'in', ('done', 'cancel'))]}" groups="stock.group_tracking_lot"/>
+                        </page>
+                        <page string="Initial Demand">
+                            <field name="move_lines" attrs="{'readonly': [('state', 'in', ('cancel', 'partially_available', 'assigned', 'done'))]}" options="{'reload_on_button': True}" mode="tree,kanban" context="{'address_in_id': partner_id, 'form_view_ref':'stock.view_move_picking_form', 'tree_view_ref':'stock.view_move_picking_tree', 'default_picking_type_id': picking_type_id, 'default_location_id': location_id, 'default_location_dest_id': location_dest_id}">
+                                    <kanban class="o_kanban_mobile">
+                                    <field name="product_id"/>
+                                    <field name="availability"/>
+                                    <field name="product_uom_qty"/>
+                                    <field name="product_uom" options="{'no_open': True, 'no_create': True}"/>
+                                    <field name="location_dest_id"/>
+                                    <field name="scrapped"/>
+                                    <field name="state"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <strong><span><t t-esc="record.product_id.value"/></span></strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-8 text-muted">
+                                                        <span><t t-esc="record.availability.value"/> on <t t-esc="record.product_uom_qty.value"/> <t t-esc="record.product_uom.value"/></span>
+                                                    </div>
+                                                    <div class="col-xs-4 text-muted">
+                                                        <span class="pull-right text-right"><t t-esc="record.location_dest_id.value"/></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                            <field name="pack_operation_exist" invisible="1"/>
+                            <field name="note" placeholder="Add an internal note that will be printed on the Picking Operations sheet" class="oe_inline"/>
+                        </page>
+                        <page string="Additional Info" name="extra">
+                            <group>
+                                <group>
+                                    <field name="move_type"/>
+                                    <field name="picking_type_id"/>
+                                    <field name="picking_type_code" invisible="1"/>
+                                    <field name="quant_reserved_exist" invisible="1"/>
+                                </group>
+                                <group>
+                                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                                    <field name="group_id"/>
+                                    <field name="priority"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+
+
+
+
+
+        
+
+
+<record id="action_picking_tree_receipts" model="ir.actions.act_window">
+            <field name="name">Stock Operations</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar</field>
+            <field name="domain"></field>
+            <field name="domain">[('receipt','=',True)]</field>
+            <field name="context">{
+                    'contact_display': 'partner_address',
+            }
+            </field>
+            <field name="view_ids" eval="[(5, 0, 0),
+    (0, 0, {'view_mode': 'tree', 'view_id': ref('stock.vpicktree')}),
+    (0, 0, {'view_mode': 'form', 'view_id': ref('view_picking_form_receipts')})]"/>
+            <field name="search_view_id" ref="view_picking_form_receipts"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click here to create a new transfer.
+              </p><p>
+                You can either do it immediately or mark it as Todo for future processing. Use your scanner to validate the transferred quantity quicker.
+              </p>
+            </field>
+        </record>
+<menuitem id="all_picking_receipts" name="Receipts" parent="stock.menu_stock_warehouse_mgmt" sequence="5" action="action_picking_tree_receipts" />
+
+
+        <record id="tt_sequence" model="ir.sequence">
+            <field name="name">tt_sequence</field>
+            <field name="code">tt.sequence</field>
+            <field name="prefix">TT</field>
+            <field name="padding">4</field>
+     
+        </record>
+
+
+    </data>
+</odoo>

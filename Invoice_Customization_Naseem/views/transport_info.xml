@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<!--Import assets--> 
+
+
+<template id="assets_backend" name="custom assets" inherit_id="web.assets_backend"> 
+    <xpath expr="." position="inside">
+    <link rel="stylesheet" href="/Invoice_Customization_Naseem/static/src/css/styles.css"/>
+    </xpath> 
+</template>
+
+
+<record id="accont_bank_statement_extension" model="ir.ui.view"> 
+    <field name="name">accont_bank_statement_extension</field> 
+    <field name="model">account.bank.statement</field> 
+    <field name="inherit_id" ref="account.view_bank_statement_form"/> 
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='line_ids']/tree/field[@name='amount']" position="after">
+
+            <field name="bilty_link" invisible="1"/>
+
+        </xpath>
+
+    </field>
+</record>
+
+</odoo>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+<!-- Import Assets -->
+<template id="assets_backend" name="custom assets" inherit_id="web.assets_backend"> 
+    <xpath expr="." position="inside">
+    <link rel="stylesheet" href="/Invoice_Customization_Naseem/static/src/css/styles.css"/>
+    </xpath> 
+</template>
+
+<record id="stock_picking_extension" model="ir.ui.view"> 
+    <field name="name">stock_picking_extension</field> 
+    <field name="model">stock.picking</field> 
+    <field name="inherit_id" ref="stock.view_picking_form"/> 
+    <field name="arch" type="xml"> 
+        <header>
+            <button name="do_button" string="Print DO" type="object" class="btn-primary"  attrs="{'invisible': [('state', 'not in',('partially_available','assigned','waiting_approve'))]}" invisible ="1" />
+            <button name="dc_button" string="Print DC" type="object" class="btn-primary" attrs="{'invisible': [('state', 'not in',('ready','done','complete'))]}" />
+            <!-- <button name="close_order" string="Close" type="object" class="btn-primary"/> -->
+            <button name="approve" string="Send for Invoice" type="object" class="btn-primary" attrs="{'invisible': [('state', 'not in',('partially_available','assigned'))]}"/>
+            <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,partially_available,assigned,cancel,waiting_approve,ready,done,complete"/>
+            <button name="submitt_bilty" string="Complete" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=','done')]}"/>          
+        </header>
+
+        <xpath expr="//button[@name='do_unreserve']" position="replace">
+        </xpath>
+        <xpath expr="//button[@name='action_confirm']" position="replace">
+        </xpath>
+        <xpath expr="//button[@name='130']" position="replace">
+        </xpath>
+        <xpath expr="//button[@name='138']" position="replace">
+        </xpath>
+        <xpath expr="//button[@name='button_scrap']" position="replace">
+        </xpath>
+        <xpath expr="//button[@name='do_print_picking']" position="replace">
+        </xpath>
+        <xpath expr="//button[@name='force_assign']" position="replace">
+        </xpath>
+        <xpath expr="//button[@name='action_assign']" position="replace">
+        
+
+        </xpath>
+        <xpath expr="//button[@name='action_assign']" position="replace">
+            <button name="action_assign" string="Recheck Availability" type="object" class="btn-primary" attrs="{'invisible': [('state', 'not in',('draft','confirmed','partially_available'))]}" />
+
+            <button name="unreserve" string="Un Reserve" type="object" class="btn-primary" attrs="{'invisible': [('state', 'not in',('assigned','partially_available'))]}" />
+            
+        </xpath>
+        <xpath expr="//button[@name='do_prepare_partial']" position="replace">
+        </xpath>
+
+       <!--  <xpath expr="//button[@name='action_cancel']" position="replace">
+        </xpath> -->
+        <xpath expr="//field[@name='origin']" position="after">
+            <field name="print_do" invisible="1"/>
+            <field name="direct_inv" invisible="1"/>
+            <field name="refund" invisible="1"/>
+            <field name="receipt" />
+        </xpath>
+         <!-- <xpath expr="//field[@name='reference_no']" position="attributes">
+            <attribute name="string">Reference</attribute>
+        </xpath> -->
+        <xpath expr="//field[@name='name']" position="after">
+            <button name="post_enteries" string="Post Enteries" type="object" class="oe_highlight oe_right space"/> 
+        </xpath>
+
+        
+        <xpath expr="//field[@name='pack_operation_product_ids']" position="replace">
+            <field name="pack_operation_product_ids"  attrs="{'readonly': [('state', 'in',('done','complete'))]}">
+            <tree  editable = "bottom">
+            <field name="product_id" invisible = "1"/>
+            <field name="product_qty" />
+            <field name="carton_to" />
+             <field name="qty_done" />
+             <field name="carton_done"/>
+             <field name="location_id" invisible = "1"/>
+             <field name="location_dest_id" invisible = "1"/>
+             <field name="lots_visible" invisible = "1"/>
+         </tree>
+     </field>
+
+        </xpath>
+
+        <xpath expr="//field[@name='move_lines']" position="replace">
+            <field name="move_lines">
+            <tree  open = "false">
+            <field name="product_id" />
+            <field name="product_uom_qty" />
+            <field name="state" />
+         </tree>
+     </field>
+
+        </xpath>
+
+             
+       <!--  <xpath expr="//page[@name='extra']" position="replace">
+        </xpath> -->
+        <!-- <xpath expr="//field[@name='pack_operation_product_ids']/tree/field[@name='product_qty']" position="after">
+            <field name="carton_to" />
+        </xpath>
+        <xpath expr="//field[@name='pack_operation_product_ids']/tree/field[@name='qty_done']" position="after">
+            <field name="carton_done"/>
+        </xpath>
+
+        <xpath expr="//field[@name='pack_operation_product_ids']/tree/field[@name='qty_done']" position="attributes">
+            <attribute name="string">Pieces Done</attribute>
+        </xpath>
+
+        <xpath expr="//field[@name='pack_operation_product_ids']/tree/field[@name='product_qty']" position="attributes">
+            <attribute name="string">Pieces To Do</attribute>
+        </xpath> -->
+
+
+       
+
+
+
+        <!-- <xpath expr="//page[1]" position="attributes">
+                
+            <attribute name="attrs">
+                {'invisible': [('state','in', ('confirmed','waiting'))]}
+            </attribute>
+
+        </xpath> -->
+
+        <xpath expr="//button[@name='do_new_transfer']" position="replace">
+            <button name="do_new_transfer" string="Validate" type="object" class="btn-primary" attrs="{'invisible': [('state', 'not in',('ready'))]}" />
+        </xpath>
+
+        <xpath expr="//field[@name='pack_operation_product_ids']" position="attributes">
+            <attribute name="attrs">
+                {'readonly': [('state','in',('waiting_approve','done'))]}
+            </attribute>
+        </xpath>
+
+        <xpath expr="//field[@name='min_date']" position="attributes">
+            <attribute name="attrs">
+                {'readonly': [('state','in',('cancel','done','complete'))]}
+            </attribute>
+
+            <!-- <field name="carton_done"/> -->
+        </xpath>
+
+        <!-- <xpath expr="//field[@name='origin']" position="after"> -->
+            
+            <group>
+                <group string="Bilty Details"  >
+                    <field name="bilty_no" attrs="{'readonly': [('state', '=','complete')]}"/>
+                   <!--  <field name="bilty_recieved" attrs="{'invisible': [('picking_type_code', '=','incoming')]}"/> -->
+                    <field name="bilty_paid" attrs="{'readonly': [('state', '=','complete')]}"/>
+                    <!-- <field name="bilty_amt_paid" /> -->
+                    <field name="bilty_amt_recev" attrs="{'readonly': [('state', '=','complete')]}"/>
+                    <field name="bilty_attach" />
+                    <field name="warehouse" widget="selection" domain="[('journal_id','=',2)]" attrs="{'readonly': [('state', '=','complete')]}"/>
+                    <field name="packing_expense" attrs="{'readonly': [('state', '=','complete')]}"/>
+                    <field name="pack_exp_recev" attrs="{'readonly': [('state', '=','complete')]}"/>
+                    <field name="del_records" invisible="1"/>
+                    <field name="inv_type" invisible="1"/>
+                    <field name="cash_book_id" attrs="{'readonly': [('state', '=','complete')]}"/>
+                    <field name="account_inv_id" invisible="1"/>
+                 </group>
+                <group string="Other Details" >
+                    <field name="reference_no" attrs="{'readonly': [('state', '=','complete')]}"/>
+                    <field name="carton_no" attrs="{'readonly': [('state', '=','complete')]}"/>
+                    <field name="bundle_no" attrs="{'readonly': [('state', '=','complete')]}"/>
+                    <field name="delivered_by" attrs="{'readonly': [('state', '=','complete')]}"/>
+                    <field name="received_by" attrs="{'readonly': [('state', '=','complete')]}"/>
+                    <!-- <field name="pack_exp_paid" /> -->
+                    
+                     <field name="transporter" domain="[('check_trans','=',True)]" widget="selection" attrs="{'readonly': [('state', '=','complete')]}"/>
+                </group>
+             </group>
+        <!-- </xpath> -->
+
+    </field> 
+</record>
+
+
+
+<record id="stock_pack_extension_form" model="ir.ui.view"> 
+    <field name="name">stock_pack_extension_form</field> 
+    <field name="model">stock.pack.operation</field> 
+    <field name="inherit_id" ref="stock.view_pack_operation_details_form"/> 
+    <field name="arch" type="xml"> 
+        
+
+        <xpath expr="//field[@name='location_dest_id']" position="after">
+            <field name="carton_done"/>
+        </xpath>
+
+
+    </field> 
+</record>
+
+
+        <record id="stock.action_picking_tree_all" model="ir.actions.act_window">
+            <field name="domain">[('backorder', '=',False),('receipt','=',False)]</field>
+        </record>
+
+        <record id="stock.stock_picking_action_picking_type" model="ir.actions.act_window">
+            <field name="domain">[('backorder', '=',False)]</field>
+        </record>
+
+<record id="customized_stock_picking" model="ir.ui.view"> 
+        <field name="name">customized_stock_picking</field> 
+        <field name="model">stock.picking</field> 
+        <field name="inherit_id" ref="stock.view_picking_form"/> 
+        <field name="arch" type="xml"> 
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="backorder" invisible="1"/>
+            </xpath>
+        </field> 
+</record>
+
+
+
+<record id="changing_backorder_wizard" model="ir.ui.view"> 
+        <field name="name">changing_backorder_wizard</field> 
+        <field name="model">stock.backorder.confirmation</field> 
+        <field name="inherit_id" ref="stock.view_backorder_confirmation"/> 
+        <field name="arch" type="xml"> 
+            <xpath expr="//button[@name='process_cancel_backorder']"    position="replace">
+                <button name="process_cancel_backorder" invisible="1" />
+            </xpath>
+        </field>
+</record>
+
+<record id="changing_warehouse_address" model="ir.ui.view"> 
+        <field name="name">changing_warehouse_address</field> 
+        <field name="model">stock.warehouse</field> 
+        <field name="inherit_id" ref="stock.view_warehouse"/> 
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="replace">
+                <field name="address"/>
+            </xpath>
+        </field>
+</record>
+
+
+<record id="changing_location_wise" model="ir.ui.view"> 
+    <field name="name">changing_location_wise</field> 
+    <field name="model">stock.quant</field> 
+    <field name="inherit_id" ref="stock.view_stock_quant_form"/> 
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='qty']" position="after">
+            <field name="carton"/>
+        </xpath>
+    </field>
+</record>
+
+
+
+<record id="cronjob_action_assign" model="ir.cron"> 
+    <field name="name">Checking Availability1</field> 
+    <field name="interval_number">30</field> 
+    <field name="interval_type">minutes</field> 
+    <field name="numbercall">-1</field> 
+    <field name="model">stock.picking</field> 
+    <field name="function">cron_action_assign</field>
+    <field name="args">()</field>
+
+</record>
+
+</odoo>

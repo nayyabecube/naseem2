@@ -1,0 +1,28 @@
+<openerp>
+    <data>
+
+    <record id="res_coa_ecube_customization" model="ir.ui.view"> 
+        <field name="name">res_coa_ecube_customization</field> 
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="account_show" />
+                <field name="bank" />
+                <field name="cash" />
+            </xpath>
+        </field>
+    </record>
+
+                <record model="ir.actions.act_window" id="action_chart_of_acc">
+                    <field name="name">Chart of Accounts</field>
+                    <field name="res_model">account.account</field>
+                    <field name="view_type">form</field>
+                    <field name="view_mode">tree,form</field>
+                    <field name="view_mode">tree,form</field>
+                    <field name="domain">[('user_type_id.name','=','Bank and Cash')]</field>
+                </record>
+
+    </data>
+</openerp>

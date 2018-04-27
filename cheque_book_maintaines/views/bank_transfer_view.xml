@@ -1,0 +1,69 @@
+<openerp>
+    <data>
+
+            <!--========================[Form View-START]=====================-->
+ 
+                <record id="bank_transfer_form_view" model="ir.ui.view">
+                    <field name="name">bank_transfer_form_view</field>
+                    <field name="model">bank.transfer.cheque</field>
+                    <field name="type">form</field>
+                    <field name="arch" type="xml">
+                        <form>
+                            <header>
+                                <button name="setToDraft" type="object" string="Draft" class="oe_highlight" attrs="{'invisible':[('state','!=','validate')]}" />
+                                <button name="createEntry" type="object" string="Create Entry" class="oe_highlight" attrs="{'invisible':[('journal_entry_id','!=',False)]}" />
+                                <button name="validateRecord" type="object" string="Validate" class="oe_highlight" attrs="{'invisible':['|',('state','!=','draft'),('journal_entry_id','=',False)]}" />
+                                <button name="setToDone" type="object" string="Done" class="oe_highlight" attrs="{'invisible':[('state','!=','validate')]}" />
+                                <!-- <button name="cancel_entry" type="object" string="Cancel Entry" class="oe_highlight" attrs="{'invisible':[('state','in',['draft','done'])]}"/> -->
+                                <field name="state" widget="statusbar"/>
+                            </header>
+                            <sheet>
+                                <group >
+                                    <group >
+                                        <field name="amount" attrs="{'readonly':[('state','in',['validate','done'])]}"/>        
+                                        <field name="customer" attrs="{'invisible':[('journal_entry_id','=',False)],'readonly':[('state','=','done')]}"/>  
+                                        <field name="journal_entry_id" readonly="1" attrs="{'invisible':[('journal_entry_id','=',False)]}"/>  
+                                    </group>
+                                    <group>
+                                        <field name="bank" attrs="{'readonly':[('state','in',['validate','done'])]}" domain="[('bank', '=', True)]" />
+                                        <field name="date" attrs="{'readonly':[('state','in',['validate','done'])]}"/>         
+                                        <field name="ref" attrs="{'readonly':[('state','in',['validate','done'])]}"/>
+
+                                    </group>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                </record>
+
+            <!--************************[Form View-ENDS]**********************-->
+
+                <record id="bank_transfer_tree_view" model="ir.ui.view"> 
+                    <field name="name">bank_transfer_tree_view</field> 
+                    <field name="model">bank.transfer.cheque</field> 
+                    <field name="type">tree</field> 
+                    <field name="arch" type="xml"> 
+                        <tree> 
+                 
+                            <field name="amount"/>
+                            <field name="bank"/>
+                            <field name="date"/>
+                            <field name="ref"/>
+     
+                        </tree> 
+                    </field> 
+            
+                </record>
+
+            <!--========================[Action-START]========================-->
+
+                <record model="ir.actions.act_window" id="action_bank_transfer">
+                    <field name="name">Bank Transfer</field>
+                    <field name="res_model">bank.transfer.cheque</field>
+                    <field name="view_type">form</field>
+                    <field name="view_mode">tree,form</field>
+                </record>
+
+            <!--************************[Action-ENDS]*************************-->
+    </data>
+</openerp>

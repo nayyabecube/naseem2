@@ -1,0 +1,93 @@
+<openerp>
+    <data>
+
+            <!--========================[Form View-START]=====================-->
+ 
+                <record id="cheque_book_form_view" model="ir.ui.view">
+                    <field name="name">cheque_book_form_view</field>
+                    <field name="model">cheque.book.maintain</field>
+                    <field name="type">form</field>
+                    <field name="arch" type="xml">
+                        <form>
+                            <header>
+                                <button name="genrate_leaves" type="object" string="Generate Leaves" class="oe_highlight"/>
+                                <button name="cheque_completed" type="object" string="Completed" class="oe_highlight"/>
+                                <field name="stages" widget="statusbar"/>
+                            </header>
+                            <sheet>
+                                <group>
+                                    <group>
+                                        <field name="acct_no" readonly="1"/>
+                                        <field name="bank" domain="[('bank', '=', True)]" />
+                                        <field name="t_amount" readonly="1"/>                           
+                                    </group>
+                                    <group>
+                                        <label for="cheque_frm_num" />
+                                        <div>
+                                            <field name="cheque_frm_descp" nolabel="1" class="oe_inline"/>
+                                            <field name="cheque_frm_num" nolabel="1" class="oe_inline"/>
+                                        </div>
+                                        <label for="cheque_to_num" />
+                                        <div>
+                                            <field name="cheque_to_descp" nolabel="1" class="oe_inline"/>
+                                            <field name="cheque_to_num" nolabel="1" class="oe_inline"/>
+                                        </div>
+                                        <field name="cheque_lev"/>
+                                        <field name="rem_lev"/>
+                                        <!-- <field name="fst_cheque_no"/> -->
+
+                                    </group>
+                                </group>
+
+                                <field name="cheque_tree_id" nolabel='1'>
+                                <tree editable="bottom" delete="false">                                   
+                                    <field name="tree_cheque_no"  readonly="1"/>
+                                    <field name="date" readonly="1"/>
+                                    <field name="amount" readonly="1"/>
+                                    <field name="desc" readonly="1"/>
+                                    <field name="pay_ref" attrs="{'readonly':[('cancel','!=',True)]}"/>
+                                    <field name="cancel" />
+                                    <field name="issued" />
+                                    <field name="bank" />
+                                    <!-- <field name="received"/> -->
+
+                                </tree>
+
+                            </field>
+                            </sheet>
+                        </form>
+                    </field>
+                </record>
+
+            <!--************************[Form View-ENDS]**********************-->
+
+                <record id="view_tree_chqeue" model="ir.ui.view"> 
+                    <field name="name">Cheue Form</field> 
+                    <field name="model">cheque.book.maintain</field> 
+                    <field name="type">tree</field> 
+                    <field name="arch" type="xml"> 
+                        <tree> 
+                 
+                            <field name="acct_no"/>
+                            <field name="bank"/>
+                            <field name="cheque_frm_num"/>
+                            <field name="cheque_to_num"/>
+     
+                        </tree> 
+                    </field> 
+            
+                </record>
+
+            <!--========================[Action-START]========================-->
+
+                <record model="ir.actions.act_window" id="action_cheque_book">
+                    <field name="name">Cheque Books</field>
+                    <field name="res_model">cheque.book.maintain</field>
+                    <field name="view_type">form</field>
+                    <field name="view_mode">tree,form</field>
+                </record>
+
+            <!--************************[Action-ENDS]*************************-->
+
+    </data>
+</openerp>

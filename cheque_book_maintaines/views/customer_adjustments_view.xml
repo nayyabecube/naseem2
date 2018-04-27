@@ -1,0 +1,69 @@
+<openerp>
+    <data>
+
+            <!--========================[Form View-START]=====================-->
+ 
+                <record id="bank_adjustments_form_view" model="ir.ui.view">
+                    <field name="name">bank_adjustments_form_view</field>
+                    <field name="model">bank.adjustments.cheque</field>
+                    <field name="type">form</field>
+                    <field name="arch" type="xml">
+                        <form>
+                            <header>
+                                <button name="validateRecord" type="object" string="Validate" class="oe_highlight" attrs="{'invisible':[('state','!=','draft')]}" />
+                                <button name="setToDraft" type="object" string="Draft" class="oe_highlight" attrs="{'invisible':[('state','!=','validate')]}" />
+                                <field name="state" widget="statusbar"/>
+                            </header>
+                            <sheet>
+                                <group >
+                                    <group >
+                                        <field name="partner_id" domain="[('customer','=',True)]" attrs="{'readonly':[('state','=','validate')]}" />         
+                                        <field name="date" attrs="{'readonly':[('state','=','validate')]}"/>         
+                                        <field name="amount" attrs="{'readonly':[('state','=','validate')]}"/>        
+                                    </group>
+                                    <group>
+                                        <field name="journal" attrs="{'readonly':[('state','=','validate')]}"/>        
+                                        <field name="dc_type" attrs="{'readonly':[('state','=','validate')]}"/>        
+                                        <field name="remarks" attrs="{'readonly':[('state','=','validate')]}"/>
+                                        <field name="account_head" attrs="{'readonly':[('state','=','validate')]}"/>         
+                                        <field name="move_id" readonly = "1"/>         
+                                    </group>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                </record>
+
+            <!--************************[Form View-ENDS]**********************-->
+
+                <record id="bank_adjustments_tree_view" model="ir.ui.view"> 
+                    <field name="name">bank_adjustments_tree_view</field> 
+                    <field name="model">bank.adjustments.cheque</field> 
+                    <field name="type">tree</field> 
+                    <field name="arch" type="xml"> 
+                        <tree> 
+                 
+                            <field name="partner_id"/>
+                            <field name="date"/>
+                            <field name="dc_type"/>
+                            <field name="amount"/>
+                            <field name="remarks"/>
+                            <field name="account_head"/>
+     
+                        </tree> 
+                    </field> 
+            
+                </record>
+
+            <!--========================[Action-START]========================-->
+
+                <record model="ir.actions.act_window" id="action_bank_adjustments">
+                    <field name="name">Customer Adjustments</field>
+                    <field name="res_model">bank.adjustments.cheque</field>
+                    <field name="view_type">form</field>
+                    <field name="view_mode">tree,form</field>
+                </record>
+
+            <!--************************[Action-ENDS]*************************-->
+    </data>
+</openerp>

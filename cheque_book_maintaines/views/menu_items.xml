@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+              <!-- Menu Item of Cheque Books -->
+        <menuitem
+                id="pdc_cheque_book"
+                name="Cheque Books"
+                parent="pdc_bcube.pdc_bcube"
+                action="action_cheque_book"
+                sequence="2"/>
+
+
+               <!-- Menu Item of Bank Transfer -->
+        <menuitem
+                id="bank_transfer_menu_root"
+                name="Bank Online"
+                parent="pdc_bcube.pdc_bcube"
+                action="action_bank_transfer"
+                sequence="3"/>
+
+
+               <!-- Menu Item of Customer Adjustments -->
+        <menuitem
+                id="bank_adjustments_menu_root"
+                name="Customer Adjustments"
+                parent="pdc_bcube.pdc_bcube"
+                action="action_bank_adjustments"
+                sequence="4"/>
+
+                <!-- Menu Item of Supplier Adjustments -->
+        <menuitem
+                id="supp_adjustments_menu_root"
+                name="Supplier Adjustments"
+                parent="pdc_bcube.pdc_bcube"
+                action="action_supp_adjustments"
+                sequence="5"/>
+
+
+                <!-- Menu Item of JV -->
+        <menuitem
+                id="jv_menu_root"
+                name="JV"
+                parent="pdc_bcube.pdc_bcube"
+                action="action_ccount_move_new_tree"
+                sequence="6"/>
+
+                <!-- Menu Item of COA -->
+        <menuitem
+                id="coa_menu_root"
+                name="Chart of Accounts"
+                parent="pdc_bcube.pdc_bcube"
+                action="action_chart_of_acc"
+                sequence="7"/>
+    </data>
+</odoo>

@@ -1,0 +1,16 @@
+<openerp>
+    <data>
+
+    <record id="res_bank_ecube_customization" model="ir.ui.view"> 
+        <field name="name">res_bank_ecube_customization</field> 
+        <field name="model">res.bank</field>
+        <field name="inherit_id" ref="base.view_res_bank_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="custom_acc_no" />
+            </xpath>
+        </field>
+    </record>
+    </data>
+</openerp>

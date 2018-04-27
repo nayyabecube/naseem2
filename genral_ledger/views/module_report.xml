@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+    <data>   
+
+        <template id="genral_ledger_report">
+
+            <t t-call="report.html_container">
+
+                <t t-call="report.external_layout">
+
+                    <t t-foreach="docs" t-as="o">
+                
+                        <div class="page">
+
+                            <style type="text/css">
+                                .header,
+                                .footer {
+                                    display: none;
+                                }
+                                @media (min-width: 992px)
+                                .container {
+                                    width: 100%;
+                                }
+
+                                @media (min-width: 768px)
+                                .container {
+                                    width: 100%;
+                                }
+                                .container {
+                                    width: 100%;
+                                }
+                                body {
+                                    margin: 0px !important;
+                                }
+                                body.o_in_iframe {
+                                    margin-top: 0px!important;
+                                }
+                                .clearfloat {
+                                    clear: both;
+                                    float: none;
+                                    width: 100%;
+                                    height: 1px;
+                                    display: block;
+                                }
+                                .report-wrapper {
+                                    width: 100%;
+                                    margin: 0px auto;
+                                }
+                                table {
+                                    width: 100%;
+                                    border-spacing: 0px;
+                                    border: 2px solid #CCC;
+                                }
+                                table tr td, table tr th {
+                                    text-align: center;
+                                    padding: 10px 5px;
+                                    border-right: 2px solid #CCC;
+                                    border-bottom: 1px solid #eee;
+                                }
+                                table tr td:last-child, 
+                                table tr th:last-child {
+                                    border-right: none
+                                }
+                                table tr:last-child td {
+                                    border-bottom: none
+                                }
+                                table tr th {
+                                    text-align: center;
+                                }
+                                .report-header {
+                                    width: 100%;
+                                    margin: 0px 0px 10px;
+                                    text-align: left;
+                                }
+                                .report-header p {
+                                    width: 50%;
+                                    float: left;
+                                    margin: 0px 0px 20px;
+                                }
+                                .report-header p .solid {
+                                    font-weight: bold;
+                                }
+                                h2 {
+                                    text-align: center;
+                                    font-size: 35px;
+                                    text-decoration: underline; 
+                                }
+                                .tile {
+                                    display: inline-block;
+                                    width: 100px;
+                                    text-align: center;
+                                    background: #a64f8e;
+                                    color: #fff;
+                                    padding: 2px 5px;
+                                }
+                                h1 {
+                                    text-align: center;
+                                    font-size: 25px;
+                                    text-decoration: underline;
+                                    font-weight: normal;
+                                }
+                            </style>
+
+                            <div class="report-wrapper">
+                                
+                                <div class="report-header">
+                                    
+                                    <h1>
+                                        <span class="liquid" t-esc="o.name"></span> 
+                                        <span class="liquid" t-esc="o.code"></span> - 
+                                        <span class="liquid">General ledger</span>
+                                    </h1>
+                                    
+                                    <div style="float:left; width: 100%;">
+                                        <p style="float:left; width: 50%; text-align: right; padding: 0px 50px;">
+                                            <span class="solid">From: </span>
+                                            <span class="liquid" t-esc="form"></span>
+                                        </p>
+
+                                        <p style="float:left; width: 50%; text-align: left; padding: 0px 50px;">
+                                            <span class="solid">To: </span>
+                                            <span class="liquid" t-esc="to"></span>
+                                        </p>
+                                    </div>
+
+                                    <div class="opning_balance">
+                                        <p>
+                                            <span class="solid">Opeing Balance : </span>
+                                            <t t-set="opened" t-value="opening(o)" />
+                                            <span class="liquid" t-esc="'{:0,}'.format(int(float(opened)))"></span>
+                                        </p>
+                                    </div>
+                                    <br class="clearfloat" />
+
+                                </div>
+
+                                <table>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>JRNL</th>
+                                        <th>Party</th>
+                                        <th>Ref</th>
+                                        <th>Entry Label</th>
+                                        <th>Debit</th>
+                                        <th>Credit</th>
+                                        <th>Balance</th>
+                                    </tr>
+
+                                    <t t-foreach="entries.sorted(key=lambda x: x.date)" t-as="data">
+                                        <tr>
+                                            <td><span t-esc="data.date"></span></td>
+                                            <td><span t-esc="data.journal_id.name"></span></td>
+                                            <td><span t-esc="data.partner_id.name"></span></td>
+                                            <td><span t-esc="data.move_id.name"></span></td>
+                                            <td><span t-esc="data.name"></span></td>
+                                            <td><span t-esc="'{:0,}'.format(int(float(data.debit)))"></span></td>
+                                            <td><span t-esc="'{:0,}'.format(int(float(data.credit)))"></span></td>
+                                            <td>
+                                                <t t-if="o.nature == 'debit'">
+                                                    <t t-set="opened" t-value="opened + data.debit - data.credit" />
+                                                    <span t-esc="'{:0,}'.format(int(float(opened)))"></span>
+                                                </t>
+                                                <t t-if="o.nature == 'credit'">
+                                                    <t t-set="opened" t-value="opened - data.debit + data.credit" />
+                                                    <span t-esc="'{:0,}'.format(int(float(opened)))"></span>
+                                                </t>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </table>
+
+                            </div><!--end of report wrapper-->
+
+                        </div><!--end of page -->
+
+                    </t>
+
+                </t>
+                
+            </t>
+
+        </template>
+
+    </data>
+
+</openerp>
