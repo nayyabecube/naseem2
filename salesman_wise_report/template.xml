@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <report
+            id="report_for_salesman" 
+            model="account.invoice"
+            name="salesman_wise_report.customer_report"
+            file="salesman_wise_report.customer_report"
+            report_type="qweb-html"
+            string="Salesman"
+            menu="False"/>
+            
+
+         <record id="salesman_wizard_form_view" model="ir.ui.view">
+            <field name="name">salesman_wizard_form_view</field>
+            <field name="model">sales.man</field>
+            <field name="arch" type="xml">
+                <form string="Report">
+                    <group name="group_top">
+                        <group name="group_left"> 
+                            
+                            <field name="date_from"/>
+                            <field name="b_types"/>
+                            <field name="sales_id" options="{'no_create':True,'no_edit':True}" widget="many2many_tags" attrs="{'invisible':[('b_types','!=','specfic')],'required':[('b_types','=','specfic')]}"/>
+
+                        </group>
+
+                        <group name="group_right">
+                            
+                            <field name="date_to"/>
+                            <field name="sales"/>
+                            <field name="receipts"/>
+                            <field name="returns"/>
+                            <field name="profit"/>
+
+                        </group>
+                        
+                    </group>
+                    <footer>
+                        <button name="%(report_for_salesman)d" type="action" string="Print" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="sales_reports_wizard" model="ir.actions.act_window">
+            <field name="name">Salesman Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sales.man</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="salesman_wizard_form_view"/>
+            <field name="target">new</field> 
+        </record>
+
+
+        <menuitem name="Salesman Wise Report" id="slaesman_wise_menu" parent="sales_team.menu_sale_report" action="sales_reports_wizard"/>       
+
+    </data>
+</openerp>
+
+

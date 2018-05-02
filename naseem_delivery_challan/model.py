@@ -27,11 +27,12 @@ class SampleDevelopmentReport(models.AbstractModel):
     def render_html(self,docids, data=None):
         report_obj = self.env['report']
         report = report_obj._get_report_from_name('naseem_delivery_challan.module_report')
-        records = self.env['sale.order'].browse(docids)
+        records = self.env['stock.picking'].browse(docids)
+
 
 
         lisst = []
-        for x in records.delivery_id.pack_operation_product_ids:
+        for x in records.pack_operation_product_ids:
             lisst.append(x)
 
                     
@@ -39,7 +40,7 @@ class SampleDevelopmentReport(models.AbstractModel):
 
         docargs = {
             'doc_ids': docids,
-            'doc_model': 'sale.order',
+            'doc_model': 'stock.picking',
             'docs': records,
             'data': data,
             'lisst': lisst,

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <report
+            id="ttdetails_report" 
+            model="tt.lc.costing"
+            name="ttdetails_report.ttdetails_report_report"
+            file="ttdetails_report.ttdetails_report_report"
+            report_type="qweb-html"
+            string="TT Details Report"/> 
+    </data>
+</openerp>

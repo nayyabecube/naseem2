@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+    <data>   
+
+        <template id="customer_report">
+
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                    <t t-foreach="docs" t-as="o">
+
+                        <div class="page">
+
+                            <style>
+
+                                .container{
+                                    width: 100%;
+                                    margin: 0px auto;
+                                }
+                                .center-container{
+                                    width: 1000px;
+                                    margin: 0px auto;
+                                }
+                                .heading{
+                                    width: 1000px;
+                                    margin: 0px auto
+                                }
+                                .heading h3{
+                                    text-align: center;
+                                    margin: 0px auto;
+                                }
+                                .heading p{
+                                    text-align: center;
+                                    margin: 0px auto;
+                                    margin-bottom: 38px;
+                                }
+                                .account{
+                                    width: 30%;
+                                    float: left;
+                                }
+                                .invoice{
+                                    width: 50%;
+                                    float: left;
+                                }
+                                .time{
+                                    width: 15%;
+                                    float: right;
+                                }
+                                .time p {
+                                    margin: 0px auto;
+                                }
+
+                                table {
+                                    margin: 10px 0px 0px;
+                                    width: 100%;
+                                    float: left;
+                                    border-spacing: 0px;
+                                    }
+
+                                table tr th,
+                                table tr td {
+                                    text-align: center;
+                                }
+
+                                table tr th {
+                                    border-bottom: 1px solid #000;
+                                    border-left: none;
+                                    border-right: none;
+                                    padding: 10px 0px;
+                                    
+                                }
+
+                                table tr td {
+                                    border-bottom: 1px solid #ddd;
+                                    padding: 5px 0px;
+                                    line-height: 1.42857143;
+                                    vertical-align: top;
+                                }
+                                
+                                .total{
+                                    width: 100%;
+                                    margin: 0px auto;
+                                }
+                                .total p1{
+                                    width: 15%;
+                                    float: right;
+                                    margin-left: 0px;
+                                    border-top: 1px solid;
+                                    border-bottom: 1px solid;
+                                }
+                                .total p2{
+                                    width: 18%;
+                                    float: right;
+                                    margin-left: 0px;
+                                    border-top: 1px solid;
+                                    border-bottom: 1px solid;
+                                }
+                                .total p3{
+                                    width: 20%;
+                                    margin-right:  0px;
+                                    float: right;
+                                    
+                                }
+
+    
+                            </style>
+
+                            <div class="container">
+
+                                <div class="center-container">
+                                    <div class="heading">
+                                        <h3>CAR ACCESORIES</h3>
+                                        <P><b>Product Valuation Summary</b></P>
+                                    </div>
+                                    <div class="account">
+                                        <!-- <P><b>Category From:</b>&#032;
+                                        <span t-esc="last()"></span>
+                                        </P> -->
+                                    </div>
+                                    <div class="invoice">
+                                        <!-- <p><b>To:</b>&#032;
+                                        <span t-esc="first()"></span>
+                                        </p> -->
+                                    </div>
+                                    <div class="time">
+
+                                        <p><b>Date:</b>&#032;<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y')"></span></p>
+
+                                        <p><b>Time:</b>&#032;<span t-esc="get_time()"></span></p>
+
+                                    </div>
+                                    <table width="100%">
+
+                                        <tr style="backgroud:#ccc;border-top:hidden;border-right;hidden;border-left:hidden">
+                                            <th style="text-align:left;padding-left:8px">Category ID</th>
+                                            <th style="text-align:left;padding-left:8px">Description</th>
+                                            <th style="text-align:left;padding-left:8px">InStock</th>
+                                            <th style="text-align:left;padding-left:8px">Stock Value</th>
+                                        </tr>
+
+                                        <t t-set="stok" t-value="0"/>
+                                        <t t-set="val" t-value="0"/>
+                                        <t t-foreach="select" t-as="data">
+                                            <tr>
+                                                <td style="text-align:left;padding-left:8px">
+                                                    <span t-esc="data.id"></span>
+                                                </td>
+                                                <td style="text-align:left;padding-left:8px">
+                                                    <span t-esc="data.name"></span>
+                                                </td>
+                                                <td style="text-align:left;padding-left:8px">
+                                                    <!-- <span t-esc="hand(data.id)[0]"></span> -->
+
+                                                    <span t-esc="'{:0,}'.format(int(float(hand(data.id)[0])))"></span>
+
+                                                    <t t-set="stok" t-value="stok+hand(data.id)[0]"/>
+                                                </td>
+                                                <td style="text-align:left;padding-left:8px">
+                                                    <!-- <span t-esc="hand(data.id)[1]"></span> -->
+                                                    <span t-esc="'{:0,}'.format(int(float(hand(data.id)[1])))"></span>
+                                                    <t t-set="val" t-value="val+hand(data.id)[1]"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+
+                                        <tr>
+                                            <th colspan="2">Total:</th>
+                                            <th style="text-align:left;padding-left:8px">
+                                                <!-- <span t-esc="stok"></span> -->
+                                                <span t-esc="'{:0,}'.format(int(float(stok)))"></span>
+                                            </th>
+                                            <th style="text-align:left;padding-left:8px">
+                                                <!-- <span t-esc="val"></span> -->
+                                                <span t-esc="'{:0,}'.format(int(float(val)))"></span>
+                                            </th>
+                                        </tr>
+                                
+                                        
+                                    </table>
+                                    
+                                </div>
+    
+                            </div>
+
+                        </div>
+
+                    </t>
+                </t>
+            </t>
+
+        </template>
+
+    </data>
+
+</openerp>

@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+    <data>   
+
+        <template id="ttdetails_report_report">
+
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                    <t t-foreach="docs" t-as="o">
+
+                        <div class="page">
+
+                            <style type="text/css">
+
+                                @media (min-width: 992px) {
+                                    .container {
+                                        width: 100%;
+                                    }
+                                }
+                                @media (min-width: 768px) {
+                                    .container {
+                                        width: 100%;
+                                    }
+                                }
+                                .container {
+                                    width: 100%;
+                                }
+                                body {
+                                    margin: 0px !important;
+                                }
+                                body.o_in_iframe {
+                                    margin-top: 0px!important;
+                                }
+                                .header,
+                                .footer {
+                                    display: none !important;
+                                }
+                                .main-wraper {
+                                    margin: 0px 270px auto;
+                                    width: 1100px;
+                                }
+
+                                .center-data {
+                                    width: 100%;
+                                }
+                                h1 {
+                                    text-align: center;
+                                    width: 65%;
+                                    margin-bottom: 40px;
+                                    text-decoration: underline;
+                                }
+                                .left {
+                                    width: 45%;
+                                    display: inline-block;
+                                    float: left;
+                                }
+                                .right {
+                                    width: 50%;
+                                    display: inline-block;
+                                    float: left;
+                                }
+                                .solid {
+                                    font-weight: bold;
+                                    display: inline-block;
+                                    width: 30%;
+                                }
+                                .clearfloat {
+                                    clear: both;
+                                    float: none;
+                                    width: 1px;
+                                }
+                                table,th,td {
+                                    border: 1px solid;
+                                    border-collapse: collapse;
+                                    text-align: center;
+                                }
+                                h2 {
+                                    text-decoration: underline;
+                                }
+
+                            </style>
+
+                            <div class="main-wraper">
+
+                                <h1>TT DETAILS</h1>
+
+                                <div class="center-data">
+
+                                    <div class="left">
+                                        
+                                        <p>
+                                            <span class="solid">Serial No.</span>
+                                            <span class="liquid" t-esc="o.tt_serial"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Supplier</span>
+                                            <span class="liquid" t-esc="o.supplier_name.name"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Money Changer</span>
+                                            <span class="liquid"  t-esc="o.changer.name"></span>
+                                        </p>
+
+                                    </div>
+
+                                    <div class="right">
+                                        
+                                        <p>
+                                            <span class="solid">Reference No.</span>
+                                            <span class="liquid"  t-esc="o.tt_reference"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Date</span>
+                                            <span class="liquid"  t-esc="o.date"></span>
+                                        </p>
+
+                                    </div>
+
+                                    <br class="clearfloat"/>
+
+                                    <div class="left">
+
+                                        <h2>TT Amount</h2>
+                                        
+                                        <p>
+                                            <span class="solid">FC Amount</span>
+                                            <span class="liquid"  t-esc="'{:0,}'.format(int(float(o.amount)))"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Conversion Rate</span>
+                                            <span class="liquid"  t-esc="'{:0,}'.format(int(float(o.conversion_rate)))"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Bank Charges</span>
+                                            <span class="liquid"  t-esc="'{:0,}'.format(int(float(o.bank_charges)))"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Total Amount To be Paid</span>
+                                            <span class="liquid"  t-esc="'{:0,}'.format(int(float(o.total_amount)))"></span>
+                                        </p>
+
+                                    </div>
+
+                                    <div class="right">
+
+                                        <h2>Paid Withholding Amount</h2>
+                                        
+                                        <p>
+                                            <span class="solid">Withholding Amount</span>
+                                            <span class="liquid" t-esc="'{:0,}'.format(int(float(o.with_holding_tax)))"></span>
+                                        </p>
+                                        
+                                       <!--  <p>
+                                            <span class="solid">Withholding Account</span>
+                                            <span class="liquid"  t-esc="o.wh_account.name"></span>
+                                        </p> -->
+                                        
+                                    </div>
+
+                                    <br class="clearfloat"/>
+
+                                    <div class="left">
+                                        
+                                        <h2>Paid Amount and Balance</h2>
+
+                                        <p>
+                                            <span class="solid">Amount Paid (PKR)</span>
+                                            <span class="liquid"  t-esc="'{:0,}'.format(int(float(o.amount_pkr)))"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Balance</span>
+                                            <span class="liquid"  t-esc="'{:0,}'.format(int(float(o.balance)))"></span>
+                                        </p>
+                                        
+                                        <!-- <p>
+                                            <span class="solid">Supplier entry id</span>
+                                            <span class="liquid"  t-esc="o.supplier_entry_id.id"></span>
+                                        </p>
+ -->
+                                    </div>
+
+                                    <div class="right">
+
+                                        <h2>Paid Amount and Balance FC</h2>
+                                        
+                                        <p>
+                                            <span class="solid">Amount Adjusted FC</span>
+                                            <span class="liquid" t-esc="'{:0,}'.format(int(float(o.adjusted_fc)))"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Balance FC</span>
+                                            <span class="liquid" t-esc="'{:0,}'.format(int(float(o.balance_fc)))"></span>
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <br class="clearfloat"/>
+
+                                <h2>Paid Amount</h2>
+
+                                <table width="80%">
+                                    
+                                    <tr>
+                                        <th>Bank</th>
+                                        <th>Cheque No</th>
+                                        <th>Amount</th>
+                                        <th>Withholding Amount</th>
+                                        <th>Ref</th>
+                                    </tr>
+
+                                    <t t-set="total" t-value="0"/>
+                                    <t t-set="total1" t-value="0"/>
+                                    <t t-foreach="o.tt_lc_costing_link" t-as="data">
+
+                                        <tr>
+                                            <td>
+                                                <span t-esc="data.journal.name"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="data.cheque_no.tree_cheque_no"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{:0,}'.format(int(float(data.amount)))"></span>
+                                                <t t-set="total" t-value="total+data.amount"/>
+
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{:0,}'.format(int(float(data.with_holding)))"></span>
+                                                <t t-set="total1" t-value="total1+data.with_holding"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="data.reference"></span>
+                                            </td>
+                                        </tr>
+                                    </t>
+
+                                        <tr>
+                                            <td colspan="2" style="font-weight:bold">Total</td>
+                                            <td>
+                                                <span t-esc="'{:0,}'.format(int(float(total)))"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{:0,}'.format(int(float(total1)))"></span>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+
+                                </table>
+
+                                <h2>Linked PO's</h2>
+
+                                <table width="80%">
+                                    
+                                    <tr>
+                                        <th>PO NO</th>
+                                        <th>Amount</th>
+                                    </tr>
+
+                                    <t t-set="total2" t-value="0"/>
+                                    <t t-foreach="o.tt_linked_po" t-as="data2">
+
+                                        <tr>
+                                            <td>
+                                                <span t-esc="data2.po_no.name"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{:0,}'.format(int(float(data2.amount)))"></span>
+                                                <t t-set="total2" t-value="total2+data2.amount"/>
+                                            </td>
+                                        </tr>
+
+                                    </t>
+
+                                        <tr>
+                                            <td style="font-weight:bold">Total</td>
+                                            <td>
+                                                <span t-esc="'{:0,}'.format(int(float(total2)))"></span>
+                                            </td>
+                                        </tr>
+
+                                </table>
+                                
+                            </div>
+                            
+                        </div><!--end of page-->
+
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

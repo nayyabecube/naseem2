@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+    <data>   
+
+        <template id="pdc_bcube_report_report">
+
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                    <t t-foreach="docs" t-as="o">
+
+                        <div class="page">
+
+                            <style type="text/css">
+
+                                @media (min-width: 992px) {
+                                    .container {
+                                        width: 100%;
+                                    }
+                                }
+                                @media (min-width: 768px) {
+                                    .container {
+                                        width: 100%;
+                                    }
+                                }
+                                .container {
+                                    width: 100%;
+                                }
+                                body {
+                                    margin: 0px !important;
+                                }
+                                body.o_in_iframe {
+                                    margin-top: 0px!important;
+                                }
+                                .header,
+                                .footer {
+                                    display: none !important;
+                                }
+                                .main-wraper {
+                                    width: 1000px;
+                                    margin: 0px auto;
+
+                                }
+
+                                .center-data {
+                                    width: 100%;
+                                }
+                                h1 {
+                                    text-align: center;
+                                    width: 65%;
+                                    text-decoration: underline;
+                                    margin: 0px auto;
+                                }
+
+                                h3 {
+        
+                                    margin-top: 50px;
+                                }
+
+                                .left {
+                                    width: 45%;
+                                    display: inline-block;
+                                    float: left;
+                                }
+                                .right {
+                                    width: 50%;
+                                    display: inline-block;
+                                    float: left;
+                                }
+                                .solid {
+                                    font-weight: bold;
+                                    display: inline-block;
+                                    width: 30%;
+                                }
+                                .clearfloat {
+                                    clear: both;
+                                    float: none;
+                                    width: 1px;
+                                }
+                                table,th,td {
+                                    border: 1px solid;
+                                    border-collapse: collapse;
+                                    text-align: center;
+                                }
+                                h3 span {
+                                    text-decoration: underline;
+                                }
+
+                            </style>
+
+
+                            <div class="main-wraper">
+
+                                <h1>PDC</h1>
+
+                                <h3>
+                                    <span class="solid">Settlement of:</span>
+                                    <!-- <span class="liquid" t-esc="o.pdc_bcube_id"></span> -->
+                                </h3>
+
+                                    <div class="left">
+
+                                        <p>
+                                            <span class="solid">Customer</span>
+                                            <span class="liquid" t-esc="o.customer.name"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Bank</span>
+                                            <span class="liquid" t-esc="o.bank.name"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Amount</span>
+                                            <span class="liquid" t-esc="'{:0,}'.format(int(float(o.amount)))"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Invoice Reference</span>
+                                            <span class="liquid"  t-esc="o.inv_ref.name"></span>
+                                        </p>
+
+                                        <p>
+                                            <span class="solid">Account Journal</span>
+                                            <span class="liquid" t-esc="o.account_head.name"></span>
+                                        </p>
+
+                                    </div>
+
+                                    <div class="right">
+                                        
+                                        <p>
+                                            <span class="solid">Date Receiving</span>
+                                            <span class="liquid" t-esc="o.date"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Cheque Date</span>
+                                            <span class="liquid" t-esc="o.cheque_date"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Cheque No.</span>
+                                            <span class="liquid" t-esc="o.chaque_no"></span>
+                                        </p>
+
+                                        <p>
+                                            <span class="solid">Days Remaining</span>
+                                            <span class="liquid" t-esc="o.days_rem"></span>
+                                        </p>
+
+                                        <p>
+                                            <span class="solid">Sales Person</span>
+                                            <span class="liquid" t-esc="o.sales_person.name"></span>
+                                        </p>
+                                        
+                                    </div>
+
+                                <br class="clearfloat"/>
+
+                                <t t-set="num" t-value="get_rem()" />
+
+                                <t t-if = "num == 1">
+                                
+                                    <h3>
+                                        <span class="solid"> Remaining Amount:</span>
+                                        <span class="liquid" t-esc="'{:0,}'.format(int(float(o.remaining_amount)))"></span>
+                                    </h3>
+
+                                    <br class="clearfloat"/>
+
+
+                                    <table width="100%">
+                                        
+                                        <tr>
+                                            <th>Bank</th>
+                                            <th>Cheque No</th>
+                                            <th>Cheque Date</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                        <t t-set="total1" t-value="0"/>
+                                        <t t-foreach="o.pdc_bcube_ids" t-as="data">
+                                            <tr>
+                                                <td>
+                                                    <span t-esc="data.bank.name"></span>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="data.chaque_no"></span>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="data.cheque_date"></span>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="'{:0,}'.format(int(float(data.amount)))"></span>
+                                                    <t t-set="total1" t-value="total1+data.amount"/>
+                                        
+                                                </td>
+                                            </tr>
+
+                                        </t>
+
+                                        <tr>
+                                            <td colspan="3" style="font-weight:bold">Total</td>
+                                            <td style="font-weight:bold">
+                                                <span t-esc="'{:0,}'.format(int(float(total1)))"></span>
+                                            </td>
+                                        </tr>
+
+                                    </table>
+
+                                    <h3>Cash Registers</h3>
+
+                                    <table width="100%">
+                                        
+                                        <tr>
+                                            <th>Cash Registers</th>
+                                            <th>Journal</th>
+                                            <th>Date</th>
+                                            <th>Reference</th>
+                                            <th>Amount</th>
+                                        </tr>
+
+                                        <t t-foreach="o.pdc_cashRegister_ids" t-as="data2">
+
+                                            <tr>
+                                                <td>
+                                                    <span t-esc="data2.statement_is.name"></span>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="data2.journal_id"></span>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="data2.date"></span>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="data2.name"></span>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="data2.amount"></span>
+                                                </td>
+                                            </tr>
+
+                                        </t>
+
+                                    </table>
+
+                                </t>
+                                
+                            </div>
+                            
+                        </div><!--end of page-->
+
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

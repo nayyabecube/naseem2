@@ -75,6 +75,7 @@
                 <button name="invoice_print" string="Print Invoice" type="object" attrs="{'invisible':['|',('sent','=',False), ('state', '!=', 'open')]}" groups="base.group_user"/>
                 <button name="128" type="action" states="open" string="Register Payment" groups="account.group_account_invoice" class="oe_highlight"/>
                 <button name="action_invoice_open" type="object"  string="Validate" class="oe_highlight" groups="account.group_account_invoice" attrs="{'invisible':[('state', 'in', 'open')]}" />
+                <button name="get_due" type="object"  string="Get Due" class="oe_highlight" />
 
                 <!-- <button name="refund_invoice" type="object"  string="Refund Invoice" class="oe_highlight" groups="account.group_account_invoice" attrs="{'invisible':[('state','!=', 'paid')]}"/> -->
 
@@ -115,6 +116,7 @@
                     </group>
                     <group colspan="2">
                         <field name="due_days"/>
+                        <field name="due_check"/>
                         <field name="date_invoice"/>
                         <field name="date_due"/>
                         <field name="incoterm" string="Delivery Term" widget="selection" groups="base.group_user"/>
@@ -560,6 +562,7 @@
                         </group>
                         <group colspan="2">
                             <field name="due_days"/>
+                            <field name="due_check"/>
                             <field name="date_invoice" readonly='0'/>
                             <field name="incoterm" string="Delivery Term" widget="selection" groups="base.group_user"/>
                             <field name="warehouse"/>
@@ -746,7 +749,7 @@
         <field name="name">Due Invoices</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">account.invoice</field>
-        <field name="domain">[('type','=','out_invoice'),('state', '=', 'open'),('due_days', '&gt;=', 1)]</field>
+        <field name="domain">[('type','=','out_invoice'),('state', '=', 'open'),('due_check', '=', True)]</field>
         <field name="search_view_id" ref="account.view_account_invoice_filter"/>                         
         <field name="view_ids" eval="[(5, 0, 0), 
             (0, 0, {'view_mode': 'tree', 'view_id': ref('view_tree_due_invoice')}), 

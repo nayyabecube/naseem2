@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+    <data>   
+
+        <template id="customer_report">
+
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                    <t t-foreach="docs" t-as="o">
+
+                        <div class="page">
+
+                            <style>
+                                .container{
+                                    width: 100%;
+                                    margin: 0px auto;
+                                }
+                                .center-container{
+                                    width: 1000px;
+                                    margin: 0px auto;
+                                }
+                                .heading {
+                                    width: 1000px;
+                                    margin: 0px auto
+                                }
+                                .heading h3{
+                                    text-align: center;
+                                    margin: 0px auto;
+                                }
+                                .heading p {
+                                    text-align: center;
+                                    margin: 0px auto;
+                                    margin-bottom: 35px;
+                                }
+                                .account{
+                                    width: 30%;
+                                    float: left;
+                                }
+                                .invoice{
+                                    width: 50%;
+                                    float: left;
+                                }
+                                .time{
+                                    width: 15%;
+                                    float: right;
+                                }
+                                .time p {
+                                    margin: 0px auto;
+                                }
+
+                                table {
+                                    border: 1px solid #000;
+                                    margin: 10px 0px 0px;
+                                    width: 100%;
+                                    float: left;
+                                    border-spacing: 0px;
+                                    }
+
+                                table tr th,
+                                table tr td {
+                                    border-right: 1px solid #000;
+                                    text-align: center;
+                                }
+
+                                table tr th {
+                                    border-bottom: 1px solid #000;
+                                    padding: 10px 0px;
+                                    
+                                }
+
+                                table tr td {
+                                    border-top: 1px solid #ddd;
+                                    padding: 5px 0px;
+                                    line-height: 1.42857143;
+                                    vertical-align: top;
+                                }
+
+                            </style>
+
+                            <div class="container">
+
+                                <div class="center-container">
+
+                                    <div class="heading">
+                                        <h3>CAR ACCESORIES</h3>
+                                        <P><b>Product Valuation</b></P>
+                                    </div>
+
+                                    <t t-set="num" t-value="namer()"/>
+
+                                    <t t-if="num == 'all_prod'">
+                                        <div class="account">
+                                            <P><b>All Products</b></P>
+                                        </div>
+                                    </t>
+
+                                    <t t-if="num == 'multi_prod'">
+                                        <div class="invoice">
+                                            <p><b>Multiple Products</b></p>
+                                        </div>
+                                    </t>
+
+                                    <t t-if="num == 'categ_wise'">
+                                        <div class="invoice">
+                                            <p><b>Category Wise</b></p>
+                                        </div>
+                                    </t>
+
+                                    <div class="time">
+
+                                        <p><b>Date:</b>&#032;<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y')"></span></p>
+
+                                        <p><b>Time:</b>&#032;<span t-esc="get_time()"></span></p>
+                                    </div>
+
+                                    <table width="100%">
+
+                                        <tr style="backgroud:#ccc;border-top:hidden">
+                                            <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Product ID</th>
+                                            <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Description</th>
+                                            <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Uom</th>
+                                            <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">In Stock Unit</th>
+                                            <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Cost Price</th>
+                                            <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">List Price</th>
+                                            <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Stock Value</th>
+                                            
+                                        </tr>
+
+                                        <t t-set='total' t-value="0"/>
+                                        <t t-foreach="records" t-as="line">
+
+                                            <tr style="border-right:hidden;border-left:hidden">
+                                                <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    <span t-esc="line.default_code"></span>
+                                                </td>
+                                                <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    <span t-esc="line.name"></span>
+                                                </td>
+                                                <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    <span t-esc="line.uom"></span>
+                                                </td>
+                                                <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    <!-- <span t-esc="hand(line.id)[1]"></span> -->
+
+                                                    <span t-esc="'{:0,}'.format(int(float(hand(line.id)[1])))"></span>
+                                                </td>
+                                                <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    <!-- <span t-esc="line.average_cost"></span> -->
+
+                                                     <span t-esc="'{0:,.2f}'.format(float(line.average_cost))"></span>
+                                                </td>
+
+
+                                                <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    <!-- <span t-esc="line.list_price_own"></span> -->
+
+                                                    <span t-esc="'{:0,}'.format(int(float(line.list_price_own)))"></span>
+                                                </td>
+
+                                                <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    <!-- <span t-esc="hand(line.id)[0]*line.average_cost"></span> -->
+
+                                                    <span t-esc="'{0:,.2f}'.format(float(hand(line.id)[0]*line.average_cost))"></span>
+                                                    <t t-set='total' t-value="total+hand(line.id)[0]*line.average_cost"/>
+
+                                                </td>
+
+                                            </tr>
+
+                                        </t>
+
+                                        <tr style="border-right:hidden;border-left:hidden">
+                                            <td colspan="6" style="font-weight:bold">Total</td>
+                                            <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden;font-weight:bold">
+                                                <span t-esc="'{0:,.2f}'.format(float(total))"></span>
+                                            </td>
+                                        </tr>
+
+
+
+
+                                       <!--  <t t-if="num == 'multi_prod'">
+                                            <t t-foreach="select" t-as="data">
+                                                <tr>
+                                                    <td>
+                                                        <span t-esc="data.default_code"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="data.name"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="data.uom"></span>
+                                                    </td>
+                                                    <td>
+                                                     
+                                                        <span t-esc="'{:0,}'.format(int(float(hand(data.id)[1])))"></span>
+                                                    </td>
+                                                    <td>
+                                            
+                                                        <span t-esc="'{:0,}'.format(int(float(data.average_cost)))"></span>
+                                                    </td>
+
+                                                    <td>
+                                
+
+                                                        <span t-esc="'{:0,}'.format(int(float(hand(data.id)[0]*data.average_cost)))"></span>
+                                                    </td>
+
+                                                    <td>
+
+                                                        <span t-esc="'{:0,}'.format(int(float(data.list_price_own)))"></span>
+                                                    </td>
+
+                                                </tr>
+                                                
+                                            </t>
+
+                                        </t> -->
+
+                                       <!--  <t t-if="num == 'categ_wise'">
+                                            <t t-foreach="cat" t-as="rec">
+                                                <tr>
+                                                    <td>
+                                                        <span t-esc="rec.default_code"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="rec.name"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="rec.uom"></span>
+                                                    </td>
+                                                    <td>
+                                                
+                                                        <span t-esc="'{:0,}'.format(int(float(hand(rec.id)[1])))"></span>
+                                                    </td>
+                                                    <td>
+                                                    
+
+                                                        <span t-esc="'{:0,}'.format(int(float(rec.average_cost)))"></span>
+                                                    </td>
+
+                                                    <td>
+                                            
+
+                                                        <span t-esc="'{:0,}'.format(int(float(hand(rec.id)[0]*rec.average_cost)))"></span>
+                                                    </td>
+
+                                                    <td>
+
+                                                       <span t-esc="'{:0,}'.format(int(float(rec.list_price_own)))"></span>
+                                                    </td>
+
+                                                </tr>
+                                                
+                                            </t>
+
+                                        </t> -->
+
+                                    </table>
+
+                                </div>
+    
+                            </div>
+
+
+                        </div>
+
+                    </t>
+                </t>
+            </t>
+
+        </template>
+
+    </data>
+
+</openerp>

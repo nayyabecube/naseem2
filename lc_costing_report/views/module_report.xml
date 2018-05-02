@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+    <data>   
+
+        <template id="lc_costing_report_report">
+
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                    <t t-foreach="docs" t-as="o">
+
+                        <div class="page">
+
+                            <style type="text/css">
+
+                                @media (min-width: 992px) {
+                                    .container {
+                                        width: 100%;
+                                    }
+                                }
+                                @media (min-width: 768px) {
+                                    .container {
+                                        width: 100%;
+                                    }
+                                }
+                                .container {
+                                    width: 100%;
+                                }
+                                body {
+                                    margin: 0px !important;
+                                }
+                                body.o_in_iframe {
+                                    margin-top: 0px!important;
+                                }
+                                .header,
+                                .footer {
+                                    display: none !important;
+                                }
+                                .main-wraper {
+                                    width: 1000px;
+                                    margin: 0px auto;
+                                }
+
+                                .center-data {
+                                    width: 100%;
+                                    margin-left: 88px; 
+                                }
+                                h1 {
+                                    text-align: center;
+                                    /*width: 100%;*/
+                                    margin: 0px auto;
+                                    text-decoration: underline;
+                                }
+                                .left {
+                                    width: 50%;
+                                    margin-top: 30px;
+                                    display: inline-block;
+                                    float: left;
+                                }
+                                .right {
+                                    width: 50%;
+                                    margin-top: 30px; 
+                                    display: inline-block;
+                                    float: left;
+                                }
+                                .solid {
+                                    font-weight: bold;
+                                    display: inline-block;
+                                    width: 30%;
+                                }
+                                .clearfloat {
+                                    clear: both;
+                                    float: none;
+                                    width: 1px;
+                                }
+                                table,th,td {
+                                    border: 1px solid;
+                                    border-collapse: collapse;
+                                    text-align: center;
+                                }
+                                h2 {
+                                    text-decoration: underline;
+                                }
+                                .solid2 {
+                                    font-weight: bold;
+                                    display: inline-block;
+                                    width: 68%;
+                                }
+                                .solid3 {
+                                    font-weight: bold;
+                                    display: inline-block;
+                                    width: 50%;
+                                }
+                                .g-total {
+                                    float : right;
+                                    font-weight : bold;
+                                    margin-top: 20px;
+                                    width: 250px;
+                                }
+
+                            </style>
+
+                            <div class="main-wraper">
+
+                                <h1>LC Costing</h1>
+
+
+                                <div class="center-data">
+
+                                    <h2>
+                                        <span class="liquid" t-esc="o.name"></span>
+                                    </h2>
+
+                                    <div class="left">
+                                        
+                                        <p>
+                                            <span class="solid">Supplier</span>
+                                            <span class="liquid" t-esc="o.partner_id.name"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Deliver To</span>
+                                            <span class="liquid" t-esc="o.picking_type_id.name"></span>
+                                            <span class="liquid" t-esc="o.picking_type_id.warehouse_id.name"></span>
+                                        </p>
+                                        
+                                    </div>
+
+                                    <div class="right">
+
+                                        <p>
+                                            <span class="solid">Order Date</span>
+                                            <span class="liquid" t-esc="o.date_order"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">ETD</span>
+                                            <span class="liquid" t-esc="o.scheduled_date"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">ETA</span>
+                                            <span class="liquid" t-esc="o.departure_date"></span>
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <br class="clearfloat"/>
+
+                                <h2>Products</h2>
+
+                                <table width="100%">
+                                    
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Vendor Description</th>
+                                        <th>Quantity(pcs)</th>
+                                        <th>Cartons</th>
+                                        <th>Last Purchase FC</th>
+                                        <th>Unit Price FC</th>
+                                        <th>Sub Total FC</th>
+                                        <th>Unit Price</th>
+                                        <th>Per Unit Cost (PKR)</th>
+                                        <th>QTY on Hand</th>
+                                        <th>Avg Cost</th>
+                                        <th>Sub Total</th>
+                                    </tr>
+
+                                    <t t-set="subtotal" t-value="0" />
+                                    <t t-set="unittotal" t-value="0" />
+                                    <t t-set="perunittotal" t-value="0" />
+                                    <t t-set="avgtotal" t-value="0" />
+                                    <t t-set="subtotal" t-value="0" />
+                                    <t t-set="qtytotal" t-value="0" />
+                                    <t t-foreach="o.order_line" t-as="data">
+
+                                        <tr>
+                                            <td>
+                                                <span t-esc="data.product_id.name"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="data.vendor_desc"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(float(data.product_qty))"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(float(data.carton))"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(float(data.last_purchase))"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(float(data.unit_price_dollar))"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(float(data.subtotal_dollar))"></span>
+                                                <t t-set="subtotal" t-value="subtotal + data.subtotal_dollar" />
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(float(data.ecube_unit_price))"></span>
+                                                <t t-set="unittotal" t-value="unittotal + data.ecube_unit_price" />
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(float(data.pkr_unit_cost))"></span>
+                                                <t t-set="perunittotal" t-value="perunittotal + data.pkr_unit_cost" />
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(float(data.qty_hand))"></span>
+                                                <t t-set="qtytotal" t-value="qtytotal+data.qty_hand" />
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(float(data.avg_unit_price))"></span>
+                                                <t t-set="avgtotal" t-value="avgtotal + data.avg_unit_price" />
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(float(data.ecube_subtotal))"></span>
+                                                <t t-set="subtotal" t-value="subtotal + data.ecube_subtotal" />
+                                            </td>
+                                        </tr>
+
+                                    </t>
+                                        
+                                    <tr style="font-weight:bold">
+                                        <td colspan="6">Total</td>
+                                        <td t-esc="'{0:,.2f}'.format(float(subtotal))"></td>
+                                        <td t-esc="'{0:,.2f}'.format(float(unittotal))"></td>
+                                        <td t-esc="'{0:,.2f}'.format(float(perunittotal))"></td>
+                                        <td t-esc="'{0:,.2f}'.format(float(qtytotal))"></td>
+                                        <td t-esc="'{0:,.2f}'.format(float(avgtotal))"></td>
+                                        <td t-esc="'{0:,.2f}'.format(float(subtotal))"></td>
+                                    </tr>
+
+                                </table>
+
+                                <h2>Punched TT's</h2>
+
+                                <table width="100%">
+                                    
+                                    <tr>
+                                        <th>TT Serial</th>
+                                        <th>TT Reference</th>
+                                        <th>Date</th>
+                                        <th>Money Changer</th>
+                                        <th>Conversion Rate</th>
+                                        <th>Amount</th>
+                                        <th>Bank Charges</th>
+                                        <th>Withholding Amount</th>
+                                        <th>Total Amount</th>
+                                    </tr>
+
+                                    <t t-set="total" t-value="0" />
+                                    <t t-set="total2" t-value="0" />
+                                    <t t-set="total3" t-value="0" />
+                                    <t t-set="total4" t-value="0" />
+                                    <t t-foreach="o.lc_costing_link" t-as="data2">
+
+                                        <tr>
+                                            <td>
+                                                <span t-esc="data2.tt_serial"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="data2.tt_reference"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="data2.date"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="data2.changer.name"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(float(data2.conversion_rate))"></span>
+                                            </td>
+
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(float(data2.amount))"></span>
+                                                <t t-set="total" t-value="total + data2.amount"/>
+                                            </td>
+
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(float(data2.bank_charges))"></span>
+                                                <t t-set="total2" t-value="total2 + data2.bank_charges"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(float(data2.with_holding_tax))"></span>
+                                                <t t-set="total3" t-value="total3 + data2.with_holding_tax"/>
+
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(float(data2.total_amount))"></span>
+                                                <t t-set="total4" t-value="total4 + data2.total_amount"/>
+                                            </td>
+                                        </tr>
+
+                                    </t>
+
+                                    <tr style="font-weight:bold">
+                                        <td colspan="5">Total</td>
+                                        <td t-esc="'{0:,.2f}'.format(float(total))"></td>
+                                        <td t-esc="'{0:,.2f}'.format(float(total2))"></td>
+                                        <td t-esc="'{0:,.2f}'.format(float(total3))"></td>
+                                        <td t-esc="'{0:,.2f}'.format(float(total4))"></td>
+                                    </tr>
+
+                                </table>
+
+                                <h2>Other Expense</h2>
+
+                                <table width="100%">
+                                    
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Expense Type</th>
+                                        <th>Vendor Name</th>
+                                        <th>Reference</th>
+                                        <th>Amount</th>
+                                    </tr>
+
+                                    <t t-set="total5" t-value="0" />
+                                    <t t-foreach="o.other_expense_link" t-as="data3">
+
+                                        <tr>
+                                            <td>
+                                                <span t-esc="data3.expense_date"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="data3.expense_type.name"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="data3.vendor_name.name"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="data3.description"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(float(data3.amount))"></span>
+                                                <t t-set="total5" t-value="total5 + data3.amount"/>
+                                            </td>
+                                        </tr>
+
+                                    </t>
+
+                                    <tr style="font-weight:bold">
+                                        <td colspan="4">Total</td>
+                                        <td t-esc="'{0:,.2f}'.format(float(total5))"></td>
+                                    </tr>
+
+                                </table>
+
+                                <div class="g-total">
+                                    <p>
+                                        <span class="solid2">Per Dollar Cost:</span  >
+                                        <span style="float:right" t-esc="'{0:,.2f}'.format(float(o.per_dollar_cost))"></span>
+                                    </p>
+
+                                    <p>
+                                        <span class="solid3">Grand Total:</span   >
+                                        <span style="float:right" t-esc="'{0:,.2f}'.format(float(o.amount_total_footer))"></span>
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div><!--end of page-->
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

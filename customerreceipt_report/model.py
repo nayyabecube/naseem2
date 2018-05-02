@@ -1,0 +1,66 @@
+#-*- coding:utf-8 -*-
+##############################################################################
+#
+#    OpenERP, Open Source Management Solution
+#    Copyright (C) 2011 OpenERP SA (<http://openerp.com>). All Rights Reserved
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+from openerp import models, fields, api
+
+class customerreceiptreport(models.AbstractModel):
+    _name = 'report.customerreceipt_report.customerreceipt_report_report'
+
+    @api.model
+    def render_html(self,docids, data=None):
+        report_obj = self.env['report']
+        report = report_obj._get_report_from_name('customerreceipt_report.customerreceipt_report_report')
+        records = self.env['customer.payment.bcube'].browse(docids)
+
+
+        def get_head():
+            value = " "
+            for x in records:
+                if x.journal_id.type == 'cash' and x.receipts == True:
+                    value = "Cash Receipt Voucher"
+                if x.journal_id.type == 'bank' and x.receipts == True:
+                    value = " Bank Receipt Voucher"
+                if x.journal_id.type == 'bank' and x.receipts == False:
+                    value = "Bank Payment Voucher"
+                if x.journal_id.type == 'cash' and x.receipts == False:
+                    value = "Cash Payment Voucher"
+                if x.journal_id.type != 'cash' and x.journal_id.type != 'bank' and x.receipts == False:
+                    value = "Payment"
+                if x.journal_id.type != 'cash' and x.journal_id.type != 'bank' and x.receipts == True:
+                    value = "Receipt"
+
+
+            return value
+
+
+
+
+
+
+
+
+        docargs = {
+            'doc_ids': docids,
+            'doc_model': 'customer.payment.bcube',
+            'docs': records,
+            'get_head': get_head,
+            }
+
+        return report_obj.render('customerreceipt_report.customerreceipt_report_report', docargs)

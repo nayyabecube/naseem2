@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <report
+            id="report_for_dc_bility_report" 
+            model="stock.picking"
+            name="dc_bility_report.module_report"
+            file="dc_bility_report.module_report"
+            report_type="qweb-html"
+            string="Dc Bility"
+            menu="False"/>
+
+       <record id="stock_picking_extension_dc_bility" model="ir.ui.view"> 
+            <field name="name">stock_picking_extension_dc_bility</field> 
+            <field name="model">stock.picking</field> 
+            <field name="inherit_id" ref="stock.view_picking_form"/> 
+            <field name="arch" type="xml"> 
+                <header>
+                    <button name="%(report_for_dc_bility_report)d" string="DC Bility" type="action" class="btn-primary" />
+                </header>
+            </field>
+
+        </record>
+
+    </data>
+</openerp>

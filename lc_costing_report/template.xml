@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <report
+            id="lc_costing_report" 
+            model="purchase.order"
+            name="lc_costing_report.lc_costing_report_report"
+            file="lc_costing_report.lc_costing_report_report"
+            report_type="qweb-html"
+            string="LC Costing Report"/> 
+    </data>
+</openerp>

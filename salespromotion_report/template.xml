@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <report
+            id="salespromotion_report" 
+            model="promo.customer"
+            name="salespromotion_report.salespromotion_report_report"
+            file="salespromotion_report.salespromotion_report_report"
+            report_type="qweb-html"
+            string="Sales Promotion Report"/> 
+    </data>
+</openerp>

@@ -22,6 +22,7 @@ class CustomerPayment(models.Model):
 	tax_link = fields.One2many('account.invoice.tax','payment_link')
 	partner_id = fields.Many2one('res.partner',string="Customer / Supplier" , required=True)
 	journal_entry_id = fields.Many2one('account.move',string="Journal Entry ID")
+	sales_id = fields.Many2one('res.users',string="Salesman")
 	taxes = fields.Many2many('account.tax', string="Taxes")
 	receipts = fields.Boolean()
 	state = fields.Selection([('draft', 'Draft'),('post', 'Posted'),], string='Status', readonly=True, copy=False, index=True, track_visibility='onchange', default='draft')

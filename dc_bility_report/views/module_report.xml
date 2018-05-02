@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+
+    <data>   
+
+        <template id="module_report">
+
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                	<t t-foreach="docs" t-as="o">
+
+                        <div class="page">
+
+                			<style type="text/css">
+
+				                @media (min-width: 992px) {
+				                    .container {
+				                        width: 100%;
+				                    }
+				                }
+				                @media (min-width: 768px) {
+				                    .container {
+				                        width: 100%;
+				                    }
+				                }
+				                .container {
+				                    width: 100%;
+				                }
+				                body {
+				                    margin: 0px !important;
+				                }
+				                body.o_in_iframe {
+				                    margin-top: 0px!important;
+				                }
+				                .header,
+				                .footer {
+				                    display: none !important;
+				                }
+					            .main-wraper {
+					                width: 1000px;
+                                    margin: 0px auto;
+					            }
+
+					            .center-data {
+					                width: 100%;
+					            }
+					            h1 {
+					            	text-align: center;
+	            					text-decoration: underline;
+	            					margin: 0px auto;
+					            	width: 65%;
+					            }
+					            .inv-no {
+					            	font-size: 20px;
+								    font-weight: bold;
+								    margin-bottom: 20px;
+								    margin-top: 40px;
+					            }
+					            .left {
+					            	width: 45%;
+					            	display: inline-block;
+					            	float: left;
+					            }
+					            .right {
+					            	width: 50%;
+					            	display: inline-block;
+					            	float: left;
+					            }
+					            .solid {
+					            	font-weight: bold;
+					            	display: inline-block;
+					            	width: 55%;
+					            }
+					            .clearfloat {
+							     	clear: both;
+							    	float: none;
+							  	 	width: 1px;
+							  	}
+							  	table,th,td {
+							  		border: 1px solid;
+							  		border-collapse: collapse;
+							  		text-align: center;
+							  	}
+							  	h2 {
+	            					text-decoration: underline;
+							  	}
+
+							  	.engineering {
+									width: 30%;
+									float: left;
+									margin-top: 50px;
+									font-weight: bold;
+								}
+
+								.engineering1 {
+									width: 30%;
+									float: right;
+									margin-top: 50px;
+									font-weight: bold;
+								}
+								
+							</style>
+
+							
+							<div class="main-wraper">
+
+								<h1>DC BILTY</h1>
+
+								<p class="inv-no">MISC/2018/0001</p>
+
+								<div class="center-data">
+
+									<div class="left">
+										
+										<p>
+											<span class="solid">Partner</span>
+											<span class="liquid" t-esc="o.partner_id.name"></span>
+										</p>
+										
+										<p>
+											<span class="solid">Destination Location</span>
+											<span class="liquid" t-esc="o.location_dest_id.name"></span>
+										</p>
+
+									</div>
+
+									<div class="right">
+										
+										<p>
+											<span class="solid">Scheduled Date</span>
+											<span class="liquid" t-esc="o.min_date"></span>
+										</p>
+										
+										<p>
+											<span class="solid">Source</span>
+											<span class="liquid" t-esc="o.origin"></span>
+										</p>
+
+									</div>
+
+									<br class="clearfloat"/>
+
+									<div class="left">
+
+										<h2>Bilty Details</h2>
+										
+										<p>
+											<span class="solid">Billty No.</span>
+											<span class="liquid" t-esc="o.bilty_no"></span>
+										</p>
+
+										<p>
+											<span class="solid">Bilty Amount Paid</span>
+											<span class="liquid" t-esc="'{:0,}'.format(int(float(o.bilty_paid)))"></span>
+										</p>
+										
+										<p>
+											<span class="solid">Bilty Amount Recev</span>
+											<span class="liquid" t-esc="'{:0,}'.format(int(float(o.bilty_amt_recev)))"></span>
+										</p>
+										
+										<p>
+											<span class="solid">Bilty Attachment</span>
+											<span class="liquid" t-esc="o.bilty_attach"></span>
+										</p>
+
+										
+										<p>
+											<span class="solid">Packing Expenses Paid</span>
+											<span class="liquid" t-esc="'{:0,}'.format(int(float(o.packing_expense)))"></span>
+										</p>
+										
+										<p>
+											<span class="solid">Packing Expenses Received</span>
+											<span class="liquid" t-esc="'{:0,}'.format(int(float(o.pack_exp_recev)))"></span>
+										</p>
+										
+
+									</div>
+
+									<div class="right">
+
+										<h2>Other Details</h2>
+										
+										<p>
+											<span class="solid">Reference</span>
+											<span class="liquid" t-esc="o.reference_no"></span>
+										</p>
+
+										<p>
+											<span class="solid">No. of Carton</span>
+											<span class="liquid" t-esc="o.carton_no"></span>
+										</p>
+										
+										<p>
+											<span class="solid">No. of Bundles</span>
+											<span class="liquid" t-esc="o.bundle_no"></span>
+										</p>
+										
+										<p>
+											<span class="solid">Delivered By</span>
+											<span class="liquid" t-esc="o.delivered_by"></span>
+										</p>
+										
+										<p>
+											<span class="solid">Received by</span>
+											<span class="liquid" t-esc="o.received_by"></span>
+										</p>
+										
+										<p>
+											<span class="solid">Transporter</span>
+											<span class="liquid" t-esc="o.transporter.name"></span>
+										</p>
+
+									</div>
+
+								</div>
+
+								<br class="clearfloat"/>
+
+								<h2>Operations</h2>
+
+								<table width="100%">
+										<tr>
+											<th>S#</th>
+											<th>Item Detail</th>
+											<th>Qty In Pieces</th>
+											<th>Qty In Cartoons</th>
+											<th>Pieces Collected</th>
+											<th>Cartons Collected</th>
+											<th>Remarks</th>
+										</tr>
+
+										<t t-set="amt" t-value="0"/>
+										<t t-set="amted" t-value="0"/>
+										<t t-set="i" t-value="1"/>
+										<t t-foreach="o.pack_operation_product_ids" t-as="line">
+
+											<tr>
+												<td>
+													<t t-esc="i"/>
+                                                	<t t-set="i" t-value="i+1"/>
+												</td>
+												<td>
+													<span t-esc="line.product_id.name"></span>
+												</td>
+												<td>
+													<span t-esc="'{0:,.2f}'.format(float(line.product_qty))"></span>
+													<t t-set="amt" t-value="amt+line.product_qty"/>
+												</td>
+												<td>
+													<span t-esc="'{0:,.2f}'.format(float(line.carton_to))"></span>
+													<t t-set="amted" t-value="amted+line.carton_to"/>
+													
+												</td>
+												<td></td>
+												<td></td>
+												<td></td>
+											</tr>
+
+
+										</t>
+										<tr>
+											<td colspan="2"><b>Total Quantity</b></td>
+											<td>
+												<span t-esc="'{0:,.2f}'.format(float(amt))"></span>
+											</td>
+											<td>
+												<span t-esc="'{0:,.2f}'.format(float(amted))"></span>
+											</td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+									</table>
+									<div class="engineering">
+										<p class="no-margin">Received By/Name &amp; Sign</p>
+										<br></br>
+										<p class="no-margin">_____________________________</p>
+									</div>
+
+									<div class="engineering1">
+										<p class="no-margin">Prepared By/Name &amp; Sign</p>
+										<br></br>
+										<p class="no-margin">_____________________________</p>
+									</div>
+
+							</div>
+
+								
+                        </div><!--end of page-->
+                        
+                    </t>
+                </t>
+            </t>
+
+        </template>
+
+    </data>
+
+</openerp>

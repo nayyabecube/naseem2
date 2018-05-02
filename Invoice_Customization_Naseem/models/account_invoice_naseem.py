@@ -39,6 +39,7 @@ class sale_invoice_customized(models.Model):
 	stock_id = fields.Many2one('stock.picking',string="Stock Link")
 	waveoff_amount 	= fields.Float(string="Discount")
 	pdc_module = fields.Many2one('pdc_bcube.pdc_bcube', string="Checks And Balance")
+	due_check = fields.Boolean()
 	# residual = fields.Monetary(string='Amount Due',
 	# 	compute='', store=True, help="Remaining amount due.")
 	# residual_signed = fields.Monetary(string='Amount Due in Invoice Currency', currency_field='currency_id',
@@ -173,6 +174,15 @@ class sale_invoice_customized(models.Model):
 			due_days = int(str((d1-d2).days))
 
 			x.due_days = due_days - payment_days
+
+	@api.multi
+	def get_due(self):
+		rec = self.env['account.invoice'].search([('type','=','out_invoice')])
+		for x in rec:
+			if x.due_days >= 1:
+				x.write({'due_check' : True})
+			else:
+				x.write({'due_check' : False})
 
 
 

@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <report
+            id="report_for_customer_promo" 
+            model="promo.customer"
+            name="customer_promtion_report.customer_report"
+            file="customer_promtion_report.customer_report"
+            report_type="qweb-html"
+            string="Customer Promotion Detail"
+            menu="False"/>
+            
+
+         <record id="customer_promo_wizard_form_view" model="ir.ui.view">
+            <field name="name">customer_promo_wizard_form_view</field>
+            <field name="model">customer.promt</field>
+            <field name="arch" type="xml">
+                <form string="Report">
+                    <group name="group_top">
+                        <group name="group_left"> 
+                            
+                            <field name="date_from"/>
+                            <field name="b_types"/>
+                            <field name="state"/>
+
+                        </group>
+
+                        <group name="group_right">
+                            
+                            <field name="date_to"/>
+                            <field name="supplier_id" options="{'no_create':True,'no_edit':True}" widget="many2many_tags" attrs="{'invisible':[('b_types','!=','specfic')],'required':[('b_types','=','specfic')]}" domain="[('customer','=',True)]"/>
+
+                        </group>
+                        
+                    </group>
+                    <footer>
+                        <button name="%(report_for_customer_promo)d" type="action" string="Print" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="prmo_reports_wizard" model="ir.actions.act_window">
+            <field name="name">Customer Promotion Detai</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">customer.promt</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="customer_promo_wizard_form_view"/>
+            <field name="target">new</field> 
+        </record>
+
+
+        <menuitem name="Customer Promotion Detail" id="promo_wise_menu" parent="sales_team.menu_sale_report" action="prmo_reports_wizard"/>       
+
+    </data>
+</openerp>
+
+

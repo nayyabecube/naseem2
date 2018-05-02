@@ -15,7 +15,7 @@
     <field name="arch" type="xml"> 
         <header>
             <button name="do_button" string="Print DO" type="object" class="btn-primary"  attrs="{'invisible': [('state', 'not in',('partially_available','assigned','waiting_approve'))]}" invisible ="1" />
-            <button name="dc_button" string="Print DC" type="object" class="btn-primary" attrs="{'invisible': [('state', 'not in',('ready','done','complete'))]}" />
+            <!-- <button name="dc_button" string="Print DC" type="object" class="btn-primary" attrs="{'invisible': [('state', 'not in',('ready','done','complete'))]}" /> -->
             <!-- <button name="close_order" string="Close" type="object" class="btn-primary"/> -->
             <button name="approve" string="Send for Invoice" type="object" class="btn-primary" attrs="{'invisible': [('state', 'not in',('partially_available','assigned'))]}"/>
             <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,partially_available,assigned,cancel,waiting_approve,ready,done,complete"/>

@@ -35,6 +35,7 @@
                         <field name="reference"  placeholder="e.g. 003/10" attrs="{'readonly':[('state','=','post')]}"/> 
                         <field name="name"  placeholder="e.g. invoice SAJ/0042" attrs="{'readonly':[('state','=','post')]}"/>
                         <field name="journal_entry_id"  readonly = "True"/>   
+                        <field name="sales_id" />   
                         <field name="receipts"  invisible="1"/>  
                         <field name="active_user" /> 
                     </group>

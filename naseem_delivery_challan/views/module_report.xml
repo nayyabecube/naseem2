@@ -55,11 +55,21 @@
 									text-align: center;
 									padding: 10px;
 								}
+
 								.engineering {
 									width: 30%;
+									float: left;
 									margin-top: 50px;
 									font-weight: bold;
 								}
+
+								.engineering1 {
+									width: 30%;
+									float: right;
+									margin-top: 50px;
+									font-weight: bold;
+								}
+
 
 
 
@@ -74,8 +84,8 @@
 									<hr width="100%"></hr>
 									<div class="challan">
 										<h2>DELIVERY CHALLAN</h2>
-										<p><span class="solid">DC NO.</span><span t-esc="o.delivery_id.name"></span></p>
-										<p><span class="solid">Dated:</span><span t-esc="o.delivery_id.min_date"></span></p>
+										<p><span class="solid">DC NO.</span><span t-esc="o.name"></span></p>
+										<p><span class="solid">Dated:</span><span t-esc="o.min_date"></span></p>
 										<p><span class="solid">CUSTOMER:</span>
 										<span t-esc="o.partner_id.name"></span></p>
 										<span class="liquid" t-esc="o.partner_id.street"></span><br></br>
@@ -85,7 +95,7 @@
 										<span class="liquid"><b>Ph:</b><span t-esc="o.partner_id.phone"></span></span><br></br>
 										<br></br>
 										<p><span class="solid">Warehouse:</span>
-										<span class="liquid" t-esc="o.delivery_id.location_dest_id.location_id.name"></span></p>
+										<span class="liquid" t-esc="o.location_dest_id.location_id.name"></span></p>
 									</div>
 
 
@@ -93,11 +103,15 @@
 										<tr>
 											<th>S#</th>
 											<th>Item Detail</th>
-											<th>Quantity Delivered</th>
+											<th>Qty In Pieces</th>
+											<th>Qty In Cartoons</th>
+											<th>Pieces Collected</th>
+											<th>Cartons Collected</th>
 											<th>Remarks</th>
 										</tr>
 
 										<t t-set="amt" t-value="0"/>
+										<t t-set="amted" t-value="0"/>
 										<t t-set="i" t-value="1"/>
 										<t t-foreach="lisst" t-as="line">
 
@@ -110,9 +124,16 @@
 													<span t-esc="line.product_id.name"></span>
 												</td>
 												<td>
-													<span t-esc="line.qty_done"></span>
-													<t t-set="amt" t-value="amt+line.qty_done"/>
+													<span t-esc="'{0:,.2f}'.format(float(line.product_qty))"></span>
+													<t t-set="amt" t-value="amt+line.product_qty"/>
 												</td>
+												<td>
+													<span t-esc="'{0:,.2f}'.format(float(line.carton_to))"></span>
+													<t t-set="amted" t-value="amted+line.carton_to"/>
+													
+												</td>
+												<td></td>
+												<td></td>
 												<td></td>
 											</tr>
 
@@ -121,13 +142,24 @@
 										<tr>
 											<td colspan="2"><b>Total Quantity</b></td>
 											<td>
-												<span t-esc="amt"></span>
+												<span t-esc="'{0:,.2f}'.format(float(amt))"></span>
 											</td>
+											<td>
+												<span t-esc="'{0:,.2f}'.format(float(amted))"></span>
+											</td>
+											<td></td>
+											<td></td>
 											<td></td>
 										</tr>
 									</table>
 									<div class="engineering">
 										<p class="no-margin">Received By/Name &amp; Sign</p>
+										<br></br>
+										<p class="no-margin">_____________________________</p>
+									</div>
+
+									<div class="engineering1">
+										<p class="no-margin">Prepared By/Name &amp; Sign</p>
 										<br></br>
 										<p class="no-margin">_____________________________</p>
 									</div>

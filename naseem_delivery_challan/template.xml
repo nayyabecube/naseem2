@@ -10,18 +10,17 @@
             report_type="qweb-html"
             string="Delivery Challan"/>
 
-       <!-- <record id="dc_button" model="ir.ui.view">
-            <field name="name">dc_button</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_form"/> 
+       <record id="stock_picking_extension_dc" model="ir.ui.view"> 
+            <field name="name">stock_picking_extension_dc</field> 
+            <field name="model">stock.picking</field> 
+            <field name="inherit_id" ref="stock.view_picking_form"/> 
             <field name="arch" type="xml"> 
                 <header>
-                    <xpath expr="//button[@name='cancel_invoice']" position="after">
-                        <button name="%(report_for_naseem_delivery_challan)d" string="Print DC" type="action" class="btn-primary" attrs="{'invisible': [('state2', 'not in','validate')]}" />
-                    </xpath>
+                    <button name="%(report_for_naseem_delivery_challan)d" string="Print DC" type="action" class="btn-primary" attrs="{'invisible': [('state', 'not in',('ready','done','complete'))]}"/>
                 </header>
             </field>
-        </record> -->
+
+        </record>
 
     </data>
 </openerp>

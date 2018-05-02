@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <report
+            id="saleswizard_report" 
+            model="naseem.sales.promo"
+            name="saleswizard_report.saleswizard_report_report"
+            file="saleswizard_report.saleswizard_report_report"
+            report_type="qweb-html"
+            string="Sales Promotion Wizard Report"/> 
+    </data>
+</openerp>

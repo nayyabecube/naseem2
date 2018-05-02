@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+    <data>   
+
+        <template id="customerreceipt_report_report">
+
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                    <t t-foreach="docs" t-as="o">
+
+                        <div class="page">
+
+                            <style type="text/css">
+
+                                @media (min-width: 992px) {
+                                    .container {
+                                        width: 100%;
+                                    }
+                                }
+                                @media (min-width: 768px) {
+                                    .container {
+                                        width: 100%;
+                                    }
+                                }
+                                .container {
+                                    width: 100%;
+                                }
+                                body {
+                                    margin: 0px !important;
+                                }
+                                body.o_in_iframe {
+                                    margin-top: 0px!important;
+                                }
+                                .header,
+                                .footer {
+                                    display: none !important;
+                                }
+                                .main-wraper {
+                                    width: 1000px;
+                                    margin: 0px auto;
+                                }
+
+                                .center-data {
+                                    width: 100%;
+                                    border: 10x solid;
+                                }
+                                h1 {
+                                    text-align: center;
+                                    width: 75%;
+                                    margin: 0px auto;
+                                    text-decoration: underline;
+                                }
+                                .left {
+                                    width: 40%;
+                                    display: inline-block;
+                                    float: left;
+                                    margin-top: 50px;
+                                    margin-left: 80px;
+                                }
+                                .right {
+                                    width: 40%;
+                                    display: inline-block;
+                                    float: left;
+                                    margin-top: 50px;
+                                    margin-left: 80px;
+                                }
+                                .solid {
+                                    font-weight: bold;
+                                    display: inline-block;
+                                    width: 45%;
+                                }
+                                .liquid {
+                                    display: inline-block;
+                                    width: 150px;
+                                    border-bottom: 1px solid;
+                                }
+                                .clearfloat {
+                                    clear: both;
+                                    float: none;
+                                    width: 1px;
+                                }
+                         
+                                .signed {
+                                    width: 50%;
+                                    margin-top: 80px;
+                                    margin-left: 80px;
+                                }
+
+                                .solid2 {
+                                    font-weight: bold;
+                                    display: inline-block;
+                                    width: 20%;
+                                }
+
+                            </style>
+
+                            <div class="main-wraper">
+
+                                <h1>
+                                    <span t-esc="get_head()"></span>
+                                </h1>
+
+                                <div class="center-data">
+
+                                    <div class="left">
+                                        
+                                        <p>
+                                            <span class="solid">Number</span>
+                                            <span class="liquid" t-esc="o.number"></span>
+                                        </p>
+
+                                        <p>
+                                            <span class="solid">Customer/Supplier</span>
+                                            <span class="liquid" t-esc="o.partner_id.name"></span>
+                                        </p>
+
+                                        <p>
+                                            <span class="solid">Paid Amount</span>
+                                            <span class="liquid" t-esc="'{:0,}'.format(int(float(o.amount)))"></span>
+                                        </p>
+
+                                        <p>
+                                            <span class="solid">Payment Method</span>
+                                            <span class="liquid" t-esc="o.journal_id.name"></span>
+                                        </p>
+
+                                    </div>
+
+                                    <div class="right">
+                                        
+                                        <p>
+                                            <span class="solid">Date</span>
+                                            <span class="liquid" t-esc="o.date"></span>
+                                        </p>
+
+                                        <p>
+                                            <span class="solid">Payment Ref</span>
+                                            <span class="liquid" t-esc="o.reference"></span>
+                                        </p>
+
+                                        <p>
+                                            <span class="solid">Memo</span>
+                                            <span class="liquid" t-esc="o.name"></span>
+                                        </p>
+
+                                        <p>
+                                            <span class="solid">Taxes</span>
+                                            <span class="liquid" t-esc="o.taxes.name"></span>
+                                        </p>
+
+                                    </div>
+
+                                    <br class="clearfloat"/>
+
+                                    <div class="signed"> 
+
+                                        <span class="solid2">Signature:</span>
+                                        <span class="liquid"></span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            
+                        </div><!--end of page-->
+
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

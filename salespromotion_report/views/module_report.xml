@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+    <data>   
+
+        <template id="salespromotion_report_report">
+
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                    <t t-foreach="docs" t-as="o">
+
+                        <div class="page">
+
+                            <style type="text/css">
+
+                                @media (min-width: 992px) {
+                                    .container {
+                                        width: 100%;
+                                    }
+                                }
+                                @media (min-width: 768px) {
+                                    .container {
+                                        width: 100%;
+                                    }
+                                }
+                                .container {
+                                    width: 100%;
+                                }
+                                body {
+                                    margin: 0px !important;
+                                }
+                                body.o_in_iframe {
+                                    margin-top: 0px!important;
+                                }
+                                .header,
+                                .footer {
+                                    display: none !important;
+                                }
+                                .main-wraper {
+                                    width: 1000px;
+                                    margin: 0px auto;
+                                }
+
+                                .center-data {
+                                    width: 100%;
+                                }
+                                h1 {
+                                    text-align: center;
+                                    width: 65%;
+                                    text-decoration: underline;
+                                    margin: 0px auto;
+                                }
+                                .inv-no {
+                                    font-size: 20px;
+                                    font-weight: bold;
+                                    margin-bottom: 20px;
+                                }
+                                .left {
+                                    width: 45%;
+                                    display: inline-block;
+                                    float: left;
+                                    margin-top: 40px;
+                                }
+                                .right {
+                                    width: 50%;
+                                    display: inline-block;
+                                    float: left;
+                                    margin-top: 40px;
+                                }
+                                .solid {
+                                    font-weight: bold;
+                                    display: inline-block;
+                                    width: 45%;
+                                }
+                                .clearfloat {
+                                    clear: both;
+                                    float: none;
+                                    width: 1px;
+                                }
+                                table,th,td {
+                                    border: 1px solid;
+                                    border-collapse: collapse;
+                                    text-align: center;
+                                }
+                                h2 {
+                                    text-decoration: underline;  
+                                }
+
+                            </style>
+
+                            <div class="main-wraper">
+
+                                <h1>SALES PROMOTION</h1>
+
+                                <div class="center-data">
+
+                                    <div class="left">
+                                        
+                                        <p>
+                                            <span class="solid">Customer Name</span>
+                                            <span class="liquid" t-esc="o.customer.name"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Promotion</span>
+                                            <span class="liquid" t-esc="o.promotion.scheme_no"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Intimation Date</span>
+                                            <span class="liquid" t-esc="o.intimation_date"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Actual Start Date</span>
+                                            <span class="liquid"  t-esc="o.start_date"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Actual End Date</span>
+                                            <span class="liquid"  t-esc="o.end_date"></span>
+                                        </p>
+
+
+                                    </div>
+
+                                    <div class="right">
+                                        
+                                        <p>
+                                            <span class="solid">Date</span>
+                                            <span class="liquid" t-esc="o.date"></span>
+                                        </p>
+
+                                        <p>
+                                            <span class="solid">Pricelist</span>
+                                            <span class="liquid" t-esc="o.pricelist.name"></span>
+                                        </p>
+
+                                    </div>
+
+                                    <br class="clearfloat"/>
+
+                                    <div class="left">
+
+                                        <h2>Current Status</h2>
+                                        
+                                        <p>
+                                            <span class="solid">Sale Value</span>
+                                            <span class="liquid" t-esc="o.sale_value"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Sale Quantity</span>
+                                            <span class="liquid" t-esc="o.sale_quantity"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Points Earned</span>
+                                            <span class="liquid" t-esc="o.points_earned"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Target</span>
+                                            <span class="liquid">------</span>
+                                        </p>
+
+                                    </div>
+
+                                    <div class="right">
+
+                                        <h2>Rewards</h2>
+                                        
+                                        <p>
+                                            <span class="solid">Discount Percentage</span>
+                                            <span class="liquid" t-esc="o.discount_percentage"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Discounted Amount</span>
+                                            <span class="liquid" t-esc="o.discounted_amount"></span>
+                                        </p>
+                                        
+                                        <p>
+                                            <span class="solid">Gift Product</span>
+                                            <span class="liquid" t-esc="o.product_gift.name"></span>
+                                        </p>
+                                        
+                                    </div>
+
+                                </div>
+
+                                <br class="clearfloat"/>
+
+                                <h2>History</h2>
+
+                                <table width="100%">
+                                    
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Product</th>
+                                        <th>Category</th>
+                                        <th>Unit Price</th>
+                                        <th>Quantity</th>
+                                        <th>Total Price</th>
+                                    </tr>
+
+                                    <t t-set="total1" t-value="0"/>
+                                    <t t-set="total2" t-value="0"/>
+                                    <t t-foreach="o.promo_history" t-as="data">
+
+                                        <tr>
+                                            <td>
+                                                <span t-esc="data.date"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="data.product.name"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="data.category.name"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="data.unit_price"></span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{:0,}'.format(int(float(data.qty)))"></span>
+                                                <t t-set="total1" t-value="total1+data.qty"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{:0,}'.format(int(float(data.total_price)))"></span>
+                                                <t t-set="total2" t-value="total2+data.total_price"/>
+                                            </td>
+                                        </tr>
+
+                                    </t>
+
+                                        <tr>
+                                            <td colspan="4" style="font-weight:bold">Total</td>
+                                            <td style="font-weight:bold">
+                                                <span t-esc="'{:0,}'.format(int(float(total1)))"></span>
+                                            </td>
+                                            <td style="font-weight:bold">
+                                                <span t-esc="'{:0,}'.format(int(float(total2)))"></span>
+                                            </td>
+                                        </tr>
+
+                                </table>
+                                
+                            </div>
+                            
+                        </div><!--end of page-->
+
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

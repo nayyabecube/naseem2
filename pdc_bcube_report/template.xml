@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <report
+            id="pdc_bcube_report" 
+            model="pdc_bcube.pdc_bcube"
+            name="pdc_bcube_report.pdc_bcube_report_report"
+            file="pdc_bcube_report.pdc_bcube_report_report"
+            report_type="qweb-html"
+            string="PDC Report"/> 
+    </data>
+</openerp>

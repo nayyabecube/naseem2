@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <report
+            id="report_for_daily_sale_report" 
+            model="account.invoice"
+            name="daily_sale_report.customer_report"
+            file="daily_sale_report.customer_report"
+            report_type="qweb-html"
+            string="Daily Sale Report"
+            menu="False"/>
+            
+
+         <record id="dailysale_report_wizard_form_view" model="ir.ui.view">
+            <field name="name">dailysale_report_wizard_form_view</field>
+            <field name="model">dailysale.report</field>
+            <field name="arch" type="xml">
+                <form string="Report">
+                    <group name="group_top">
+                        <group name="group_left"> 
+                            
+                            <field name="date"/>
+
+                        </group>
+
+                        <group name="group_right">
+                        
+
+                        </group>
+                        
+                    </group>
+
+                    <footer>
+                        <button name="%(report_for_daily_sale_report)d" type="action" string="Print" class="oe_highlight"/>
+                    </footer>
+                
+                </form>
+                
+                    
+            </field>
+        </record>
+
+        <record id="dailysale_report_reports_wizard" model="ir.actions.act_window">
+            <field name="name">Daily Sale Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dailysale.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="dailysale_report_wizard_form_view"/>
+            <field name="target">new</field> 
+        </record>
+
+
+        <menuitem name="Daily Sale Report" id="dailysale_report_wise_menu" parent="sales_team.menu_sale_report" action="dailysale_report_reports_wizard"/>       
+
+    </data>
+</openerp>
+
+

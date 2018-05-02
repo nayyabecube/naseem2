@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+    <data>   
+
+        <template id="customer_invoice_report_report">
+
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                    <t t-foreach="docs" t-as="o">
+
+                        <div class="page">
+
+                                <style>
+
+                                @media (min-width: 992px) {
+                                    .container {
+                                        width: 100%;
+                                    }
+                                }
+                                @media (min-width: 768px) {
+                                    .container {
+                                        width: 100%;
+                                    }
+                                }
+                                .container {
+                                    width: 100%;
+                                }
+                                body {
+                                    margin: 0px !important;
+                                }
+                                body.o_in_iframe {
+                                    margin-top: 0px!important;
+                                }
+                                .header,
+                                .footer {
+                                    display: none !important;
+                                }
+                                    .main-data {
+                                        width: 100%;
+                                    }
+                                    .centered {
+                                        width: 1000px;
+                                        margin: auto;
+                                    }
+                                    .logo {
+                                        width: 10%;
+                                        float: left;
+                                    }
+                                    .logo img {
+                                        margin: 20px 20px 20px 20px;
+                                    }
+                                    .address {
+                                        width: 25%;
+                                        float: right;
+                                        margin: 15px 0px 15px 0px;
+                                    }
+                                    .address p {
+                                        text-align: right;
+                                    }
+                                    .clearfloat {
+                                        clear: both;
+                                        float: none;
+                                    }
+                                    .invoice {
+                                        width: 100%;
+                                        border-top: 2px solid dimgrey;
+                                        border-bottom: 2px solid dimgrey;
+                                        height: 192px;
+                                        background-color: gainsboro;
+                                    }
+                                    .invoice-to {
+                                        width: 50%;
+                                        float: left;
+                                        margin-top: 5px;
+                                    }
+                                    .invoice-to p {
+                                        margin-left: 20px;
+                                        margin-top: 5px;
+                                        margin-bottom: 5px;
+                                    }
+                                    .invoice-no {
+                                        width: 35%;
+                                        float: right;
+                                        background-color: mediumvioletred;
+                                        margin: 10px 20px 0px 0px;
+                                        color: aliceblue;
+
+                                    }
+                                    .invoice-no p {
+                                        margin-left: 10px;
+                                        padding: 3px;
+                                    }
+                                    .solid {
+                                        font-weight: bold;
+                                        margin-right: 5px;
+                                    }
+                                    table, td, th {
+                                        border: 1px solid dimgrey;
+                                        border-collapse: collapse;
+                                        padding: 8px;
+                                        margin: 10px 0px 10px 0px;
+                                    }
+                                    .invoice-no .liquid {
+                                        text-align: justify;
+                                    }
+                                    
+                                    table th {
+                                        background-color: mediumvioletred;
+                                        color: darkgrey;
+                                        border: 1px solid;
+                                    }
+                                    .termed {
+                                        margin: 40px 0px 40px 0px;
+                                    }
+                                    .bordered {
+                                        border-bottom: 1px solid dimgrey;
+                                    }
+                                    .no-margin {
+                                        margin-top: 0px;
+                                        margin-bottom: 0px;
+                                    }
+
+                                </style>
+
+                                <div class="main-data">
+                                    <div class="centered">
+
+                                        <div class="logo">
+                                            <img src="/customer_invoice_report/static/src/img/logo.png" style="width:100px; height: 100px; "/>
+                                        </div>
+
+                                        <div class="address">
+                                            <p class="no-margin">
+                                                <span class="solid"></span>
+                                                <span class="liquid">Your Company</span>
+                                            </p>
+
+                                            <p class="no-margin">
+                                                <span class="solid"></span>
+                                                <span class="liquid">300 Auto Shop</span>
+                                            </p>
+
+                                            <p class="no-margin">
+                                                <span class="solid"></span>
+                                                <span class="liquid">John Doe Main Street ,</span>
+                                            </p>
+
+                                            <p class="no-margin">
+                                                <span class="solid">State:</span>
+                                                <span class="liquid">Chicago, IL 60621</span>
+                                            </p>
+
+                                            <p class="no-margin">
+                                                <span class="solid">Mobile</span>
+                                                <span class="liquid"> 0300-6000234</span>
+                                            </p>
+
+                                            <p class="no-margin">
+                                                <span class="solid">E-Mail</span>
+                                                <span class="liquid">enterprisecube@gmail.com</span>
+                                            </p>
+
+                                        </div>
+
+                                        <br class="clearfloat"/>
+
+                                        <div class="invoice">
+
+                                            <div class="invoice-to">
+                                                <p class="no-margin">
+                                                    <span class="solid">Invoice To:</span>
+                                                    <span class="liquid"></span>
+
+                                                </p>
+                                                <p class="no-margin">
+                                                    <span class="solid">Associate Dean for feculty Dev</span>
+
+                                                </p>
+                                                <p class="no-margin">
+                                                    <span class="solid"></span>
+                                                    <span class="liquid">College of Natural Science</span>
+
+                                                </p>
+
+                                                <p><span class="solid">Country</span>
+                                                    <span class="liquid">USA</span>
+
+                                                </p>
+
+                                                <p><span class="solid">State/Province</span>
+                                                    <span class="liquid">California</span>
+
+                                                </p>
+
+                                                <p class="no-margin">
+                                                    <span class="solid">Email:</span>
+                                                </p>
+
+                                                <p>
+                                                    <span class="liquid">info@gmail.com</span>
+                                                </p>
+
+                                            </div>
+
+                                            <div class="invoice-no">
+                                                <p>
+                                                    <span class="solid">Invoice No:</span>
+                                                    <span class="liquid" style="float: right;width: 100px;">INV 350.00</span>
+                                                </p>
+
+                                            </div>
+
+                                            <div class="invoice-no">
+
+                                                <p class="no-margin">
+                                                    <span class="solid">Invoice Date:</span>
+                                                    <span class="liquid" style="float: right;width: 100px;">20-04-2016</span>
+                                                </p>
+
+                                                <p class="no-margin">
+                                                    <span class="solid">SO:</span>
+                                                    <span class="liquid" style="float: right;width: 100px;">50013</span>
+                                                </p>
+
+                                                <p class="no-margin">
+
+                                                    <span class="solid">Order Date:</span>
+                                                    <span class="liquid" style="float: right;width: 100px;">20-04-2016</span>
+                                                </p>
+                                                <p class="no-margin">
+                                                    <span class="solid">Due Date:</span>
+                                                    <span class="liquid" style="float: right;width: 100px;">30-05-2016</span>
+
+                                                </p>
+                                            </div>
+                                            
+                                        </div>
+                                        <table width="100%" class="table-1">
+
+                                            <tr>
+                                                <th>Sr.</th>
+                                                <th>Description</th>
+                                                <th>Quantity</th>
+                                                <th>Unit Price</th>
+                                                <th>Taxes</th>
+                                                <th>Price</th>
+                                            </tr>
+
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Reconstructed, unproceed instrument data at original resolution.</td>
+                                                <td>1,000</td>
+                                                <td>$000.00</td>
+                                                <td></td>
+                                                <td>$000.00</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>2</td>
+                                                <td>Cargo</td>
+                                                <td>1,000</td>
+                                                <td>$000.00</td>
+                                                <td></td>
+                                                <td>$000.00</td>
+                                            </tr>
+
+                                        </table>
+
+                                        <table class="calendar_table" style="width: 35%;float: right;padding-right: 10px;">
+                                            <tr style="border-top: hidden;border-left: hidden;border-right: hidden;">
+                                                <td>
+                                                    <span class="solid">Sub Total</span>
+                                                </td>
+                                                <td style="border-left: hidden;">
+                                                    <span class="liquid taxes">$350.00</span>
+                                                </td>
+                                                
+                                            </tr>
+
+                                            <tr style="border-left: hidden;border-right: hidden;">
+                                                <td>
+                                                    <span class="solid">Taxes</span>
+                                                </td>
+                                                <td style="border-left: hidden;">
+                                                    <span class="liquid taxes">$10.00</span>
+                                                </td>
+                                                
+                                            </tr>
+                                            <tr style="border-bottom: hidden;border-left: hidden;border-right: hidden;">
+                                                <td>
+                                                    <span class="solid">TOTAL</span>
+                                                </td>
+                                                <td style="border-left: hidden;">
+                                                    <span class="liquid taxes">$360.00</span>
+                                                </td>
+                                                
+                                            </tr>
+
+                                        </table>
+
+                                        <br class="clearfloat"/>
+
+                                        <div class="bordered"></div>
+
+                                        <h3>Payment History</h3>
+
+                                        <table width="100%">
+
+                                            <tr>
+                                                <th>Sr.</th>
+                                                <th>Date</th>
+                                                <th>Method</th>
+                                                <th>Ref</th>
+                                                <th>Amount</th>
+
+                                            </tr>
+
+                                            <tr>
+                                                <td>1</td>
+                                                <td>20-04-2016</td>
+                                                <td>Cash</td>
+                                                <td>1,000</td>
+                                                <td>$490.00</td>
+                                
+                                            </tr>
+
+                                            <tr>
+                                                <td>2</td>
+                                                <td>Cargo</td>
+                                                <td>Bank</td>
+                                                <td>1,000</td>
+                                                <td>$500.00</td>
+                                
+                                            </tr>
+
+                                        </table>
+
+                                        <div class="termed">
+
+                                            <p>
+                                                <span class="solid">&#8226; Payment Term:</span>
+                                                <span class="liquid">End of following month</span>
+
+                                            </p>
+                                            <p>
+                                                <span class="solid">&#8226; Comment:</span>
+                                                <span class="liquid">Copyright</span>
+
+                                            </p>
+                                            <p>
+                                                <span class="solid">&#8226; Fiscal Position Remark:</span>
+                                                <span class="liquid">FY 2016</span>
+
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                        </div><!--end of page-->
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

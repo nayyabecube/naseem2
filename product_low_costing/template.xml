@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <report
+            id="report_for_product_low_costing" 
+            model="account.invoice"
+            name="product_low_costing.customer_report"
+            file="product_low_costing.customer_report"
+            report_type="qweb-html"
+            string="Product Low Selling"
+            menu="False"/>
+            
+
+         <record id="product_lowselling_wizard_form_view" model="ir.ui.view">
+            <field name="name">product_lowselling_wizard_form_view</field>
+            <field name="model">product.lowselling</field>
+            <field name="arch" type="xml">
+                <form string="Report">
+                    <group name="group_top">
+                        <group name="group_left"> 
+                            
+                            <field name="date"/>
+
+                        </group>
+
+                        <group name="group_right">
+                        
+
+                        </group>
+                        
+                    </group>
+
+                    <footer>
+                        <button name="%(report_for_product_low_costing)d" type="action" string="Print" class="oe_highlight"/>
+                    </footer>
+                
+                </form>
+                
+                    
+            </field>
+        </record>
+
+        <record id="lowselling_prod_reports_wizard" model="ir.actions.act_window">
+            <field name="name">Product Low Selling</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.lowselling</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="product_lowselling_wizard_form_view"/>
+            <field name="target">new</field> 
+        </record>
+
+
+        <menuitem name="Product Low Selling" id="lowselling_prod_wise_menu" parent="sales_team.menu_sale_report" action="lowselling_prod_reports_wizard"/>       
+
+    </data>
+</openerp>
+
+

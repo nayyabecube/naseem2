@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <report
+            id="jv_report" 
+            model="account.move"
+            name="jv_report.jv_report_report"
+            file="jv_report.jv_report_report"
+            report_type="qweb-html"
+            string="JV Report"/> 
+    </data>
+</openerp>
