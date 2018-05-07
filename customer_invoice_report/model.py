@@ -30,11 +30,29 @@ class customerinvoicereport(models.AbstractModel):
         records = self.env['account.invoice'].browse(docids)
 
 
+        def get_name():
+            value = " "
+            if records.type == "out_invoice":
+                value = "Customer Invoice"
+            if records.type == "in_invoice":
+                value = "Vendor Invoice"
+            if records.type == "out_refund":
+                value = "Customer Return Invoice"
+            if records.type == "in_refund":
+                value = "Vender Return Invoice"
+
+            return value
+
+
+
+
+
 
         docargs = {
             'doc_ids': docids,
             'doc_model': 'account.invoice',
             'docs': records,
+            'get_name': get_name,
             }
 
         return report_obj.render('customer_invoice_report.customer_invoice_report_report', docargs)

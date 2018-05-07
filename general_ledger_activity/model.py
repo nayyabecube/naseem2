@@ -48,8 +48,6 @@ class SampleDevelopmentReport(models.AbstractModel):
 
         # records = self.env['account.move'].search([('id','=',record_wizard.partner_ids.id)])
 
-        count = [1]
-
 
         if accounts == "spec_acc":
             lisst = []
@@ -130,7 +128,6 @@ class SampleDevelopmentReport(models.AbstractModel):
 
             'doc_ids': docids,
             'doc_model': 'account.account',
-            'docs': count,
             'data': data,
             'get_form': get_form,
             'get_to': get_to,

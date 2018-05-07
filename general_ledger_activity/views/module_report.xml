@@ -7,309 +7,433 @@
 
             <t t-call="report.html_container">
                 <t t-call="report.external_layout">
-                    <t t-foreach="docs" t-as="o">
 
-                        <div class="page">
+                    <div class="page">
 
-                            <style>
+                        <style>
 
-                                .container {
-                                    width: 100%;
-                                    margin: 0px auto;
-                                }
-                                .center-container {
-                                    width: 1000px;
-                                    margin: 0px auto
-                                }
-                                .date{
-                                    width: 9%;
-                                    float: left;
-                                    margin-bottom: 20px;
-                                    font-weight: bold;
-                                }
-                                .date p {
-                                    margin: 0px auto;
-                                }
-                                .to{
-                                    width: 65%;
-                                    float: left;
-                                }
-                                .to p {
-                                    margin: 0px auto;
-                                }
-                                .from{
-                                    width: 15%;
-                                    float: right;
-                                }
-                                .heading{
-                                    text-align: center;
-                                    margin-bottom: 20px;
-                                }
-                                .heading h3 {
-                                    margin: 0px auto;
-                                }
-                                .heading p {
-                                    margin: 0px auto;
-                                    margin-bottom: 50px; 
-                                }
-                                .id {
-                                    width: 30%;
-                                    float: left;
-                                }
-                                .description {
-                                    width: 40%;
-                                    float: left;
-                                }
-                                .balance {
-                                    width: 30%;
-                                    float: right;
-                                }
-                                .clearfloat {
-                                    clear: both;
-                                    float: none;
-                                }
+                            .container {
+                                width: 100%;
+                                margin: 0px auto;
+                            }
+                            .center-container {
+                                width: 1000px;
+                                margin: 0px auto
+                            }
+                            .date{
+                                width: 9%;
+                                float: left;
+                                margin-bottom: 20px;
+                                font-weight: bold;
+                            }
+                            .date p {
+                                margin: 0px auto;
+                            }
+                            .to{
+                                width: 65%;
+                                float: left;
+                            }
+                            .to p {
+                                margin: 0px auto;
+                            }
+                            .from{
+                                width: 15%;
+                                float: right;
+                            }
+                            .heading{
+                                text-align: center;
+                                margin-bottom: 20px;
+                            }
+                            .heading h3 {
+                                margin: 0px auto;
+                            }
+                            .heading p {
+                                margin: 0px auto;
+                                margin-bottom: 50px; 
+                            }
+                            .id {
+                                width: 30%;
+                                float: left;
+                            }
+                            .description {
+                                width: 40%;
+                                float: left;
+                            }
+                            .balance {
+                                width: 30%;
+                                float: right;
+                            }
+                            .clearfloat {
+                                clear: both;
+                                float: none;
+                            }
 
-                                table {
-                                    border: 1px solid #000;
-                                    margin: 10px 0px 0px;
-                                    width: 100%;
-                                    float: left;
-                                    border-spacing: 0px;
-                                    }
-
-                                table tr th,
-                                table tr td {
-                                    border-right: 1px solid #000;
-                                    text-align: center;
+                            table {
+                                border: 1px solid #000;
+                                margin: 10px 0px 0px;
+                                width: 100%;
+                                float: left;
+                                border-spacing: 0px;
                                 }
 
-                                table tr th {
-                                    border-bottom: 1px solid #000;
-                                    padding: 10px 0px;
-                                    
-                                }
+                            table tr th,
+                            table tr td {
+                                border-right: 1px solid #000;
+                                text-align: center;
+                            }
 
-                                table tr td {
-                                    border-top: 1px solid #ddd;
-                                    padding: 5px 0px;
-                                    line-height: 1.42857143;
-                                    vertical-align: top;
-                                }
-
-                                .voucher {
-                                    width: 20%;
-                                    float: left;
-                                }
-                                .voucher p {
-                                    margin: 0px auto;
-                                }
-                                .nine {
-                                    width: 80%;
-                                    float: left;
-                                }
-                                .acc{
-                                    width: 100%;
-                                    float: left;
-                                    border-bottom: none;
-                                    padding: 4px;
-                                    margin-top: 30px;
-
-                                }
-                                .acc p1 {
-                                    width: 10%;
-                                    float: left;
-                                    font-weight: bold;
-                                }
-                                .acc p2 {
-                                    width: 8%;
-                                    float: left;
-                                    font-weight: bold;
-                                }
-                                .acc p3 {
-                                    width: 10%;
-                                    float: left;
-                                    font-weight: bold;
-                                }
-                                .acc p4 {
-                                    width: 65%;
-                                    float: left;
-                                    font-weight: bold;
-                                }
-                                .acc p5 {
-                                    width: 8%;
-                                    float: left;
-                                    font-weight: bold;
-                                }
-                                .acc p6 {
-                                    width: 15%;
-                                    float: left;
-                                }
+                            table tr th {
+                                border-bottom: 1px solid #000;
+                                padding: 10px 0px;
                                 
-                                .current{
-                                    width: 78%;
-                                    float: left;
-                                }
-                                .zero{
-                                    width: 6%;
-                                    float: left;
-                                }
-                                .zero p{
-                                    border-top: 1px solid;
-                                    border-bottom: 1px solid;
+                            }
 
-                                }
-                                .seven{
-                                    width: 6%;
-                                    float: left;
-                                }
-                                .seven p{
-                                    border-top: 1px solid;
-                                    border-bottom: 1px solid;
-                                }
-                                .third{
-                                    width: 6%;
-                                    float: left;
-                                }
-                                .third p {
-                                    margin-left: 21px;
-                                    display: inline-block;
-                                    border-top: 1px solid;
-                                    border-bottom: 1px solid;
+                            table tr td {
+                                border-top: 1px solid #ddd;
+                                padding: 5px 0px;
+                                line-height: 1.42857143;
+                                vertical-align: top;
+                            }
 
-                                }
-                                .clearfloat {
-                                    clear: both;
-                                    float: none;
-                                }
-                                .second {
-                                    width: 14%;
-                                    float: left;
-                                }
-                                .second p {
-                                    margin: 0px auto;
-                                }
-                                .to {
-                                    width: 3%;
-                                    float: left;
-                                    font-weight: bold;
-                                }
-                                .fifth {
-                                    width: 43%;
-                                    float: left;
-                                }
-                                .fifth p {
-                                    margin: 0px auto;
-                                }
-                                .sixth {
-                                    width: 15%;
-                                    float: right;
-                                    margin: 0px auto;
-                                }
+                            .voucher {
+                                width: 20%;
+                                float: left;
+                            }
+                            .voucher p {
+                                margin: 0px auto;
+                            }
+                            .nine {
+                                width: 80%;
+                                float: left;
+                            }
+                            .acc{
+                                width: 100%;
+                                float: left;
+                                border-bottom: none;
+                                padding: 4px;
+                                margin-top: 30px;
+
+                            }
+                            .acc p1 {
+                                width: 10%;
+                                float: left;
+                                font-weight: bold;
+                            }
+                            .acc p2 {
+                                width: 8%;
+                                float: left;
+                                font-weight: bold;
+                            }
+                            .acc p3 {
+                                width: 10%;
+                                float: left;
+                                font-weight: bold;
+                            }
+                            .acc p4 {
+                                width: 65%;
+                                float: left;
+                                font-weight: bold;
+                            }
+                            .acc p5 {
+                                width: 8%;
+                                float: left;
+                                font-weight: bold;
+                            }
+                            .acc p6 {
+                                width: 15%;
+                                float: left;
+                            }
                             
-                            </style>
+                            .current{
+                                width: 78%;
+                                float: left;
+                            }
+                            .zero{
+                                width: 6%;
+                                float: left;
+                            }
+                            .zero p{
+                                border-top: 1px solid;
+                                border-bottom: 1px solid;
 
-                            <div class="container">
+                            }
+                            .seven{
+                                width: 6%;
+                                float: left;
+                            }
+                            .seven p{
+                                border-top: 1px solid;
+                                border-bottom: 1px solid;
+                            }
+                            .third{
+                                width: 6%;
+                                float: left;
+                            }
+                            .third p {
+                                margin-left: 21px;
+                                display: inline-block;
+                                border-top: 1px solid;
+                                border-bottom: 1px solid;
 
-                                <div class="center-container">
+                            }
+                            .clearfloat {
+                                clear: both;
+                                float: none;
+                            }
+                            .second {
+                                width: 14%;
+                                float: left;
+                            }
+                            .second p {
+                                margin: 0px auto;
+                            }
+                            .to {
+                                width: 3%;
+                                float: left;
+                                font-weight: bold;
+                            }
+                            .fifth {
+                                width: 43%;
+                                float: left;
+                            }
+                            .fifth p {
+                                margin: 0px auto;
+                            }
+                            .sixth {
+                                width: 15%;
+                                float: right;
+                                margin: 0px auto;
+                            }
+                        
+                        </style>
 
-                                    <div class="heading">
-                                        <h3>CAR ACCESSORIES</h3>
-                                        <p><b>General Ledger Activity</b></p>
+                        <div class="container">
+
+                            <div class="center-container">
+
+                                <div class="heading">
+                                    <h3>CAR ACCESSORIES</h3>
+                                    <p><b>General Ledger Activity</b></p>
+                                </div>
+
+
+                                <div class="date">
+                                    <p>Date From:</p>
+
+                                </div>
+                                <div class="second">
+                                    <p>
+                                        <span t-esc="get_form()"></span>
+                                    </p>
+
+                                </div>
+                                <div class="to">
+                                    <p>To:</p>
+                        
+                                </div>
+                                <div class="fifth">
+                                    <p>
+                                        <span t-esc="get_to()"></span>
+                                    </p>
+
+                                </div>
+                                <div class="sixth">
+
+                                    <p1><b>Date:</b>&#032;<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y')"></span></p1>
+
+                                    <p2><b>Time:</b>&#032;<span t-esc="get_time()"></span></p2>
+
+                                </div>
+
+                                <t t-foreach="lisst" t-as="data">
+
+                                    <div class="acc">
+                                        <p2>
+                                            <span t-esc="data.code"></span>
+                                        </p2>
+                                        <p4>
+                                            <span t-esc="data.name"></span>
+                                        </p4>
+                                        <p5>Balance:</p5>
+                                        <p6>
+                                            <!-- <span t-esc="get_bal(data.code)"></span> -->
+                                            <span t-esc="'{:0,}'.format(int(float(get_bal(data.code))))"></span>
+                                        </p6>
+
                                     </div>
 
+                                    <table width="100%">
+                                        <tr style="backgroud:#ccc;border-top:hidden">
+                                            <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">No</th>
+                                            <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Type</th>
+                                            <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Date</th>
+                                            <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Reference</th>
+                                            <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Detail:</th>
+                                            <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Debit:</th>
+                                            <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Credit:</th>
+                                            <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Balance</th>
+                                            
+                                        </tr>
+                                        <span t-esc="get_line(data.code)"></span>
+                                        <t t-set='bal' t-value="get_bal(data.code)"/>
+                                        <t t-set='t_d' t-value="0"/>
+                                        <t t-set='t_c' t-value="0"/>
+                                        <t t-set='t_b' t-value="0"/>
+                                        <t t-foreach="inner" t-as="line">
 
-                                    <div class="date">
-                                        <p>Date From:</p>
+                                            <tr style="border-right:hidden;border-left:hidden">
 
-                                    </div>
-                                    <div class="second">
-                                        <p>
-                                            <span t-esc="get_form()"></span>
-                                        </p>
+                                                <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    <span t-esc="line.move_id.name"></span>
+                                                </td>
 
-                                    </div>
-                                    <div class="to">
-                                        <p>To:</p>
-                            
-                                    </div>
-                                    <div class="fifth">
-                                        <p>
-                                            <span t-esc="get_to()"></span>
-                                        </p>
+                                                <td>JC</td>
 
-                                    </div>
-                                    <div class="sixth">
+                                                <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    <span t-esc="line.move_id.date"></span>
+                                                </td>
 
-                                        <p1><b>Date:</b>&#032;<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y')"></span></p1>
+                                                <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    <span t-esc="line.move_id.ref"></span>
+                                                </td>
 
-                                        <p2><b>Time:</b>&#032;<span t-esc="get_time()"></span></p2>
+                                                <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    <span t-esc="line.name"></span>
+                                                </td>
 
-                                    </div>
+                                                <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    <t t-set="debit" t-value="line.debit"/>
 
-                                    <t t-foreach="lisst" t-as="data">
+                                                    <t t-if = "debit == 0">
+                                                        <span>-</span>
+                                                    </t>
+
+                                                    <t t-if = "debit != 0">
+                                                        <span t-esc="'{:0,}'.format(int(float(line.debit)))"></span>
+                                                    </t>
+                                                    
+                                                    <t t-set='t_d' t-value="t_d+line.debit"/>
+
+                                                </td>
+
+                                                <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    <t t-set="credit" t-value="line.credit"/>
+
+                                                    <t t-if = "credit == 0">
+                                                        <span>-</span>
+                                                    </t>
+
+                                                    <t t-if = "credit != 0">
+                                                        <span t-esc="'{:0,}'.format(int(float(line.credit)))"></span>
+                                                    </t>
+
+                                                    <t t-set='t_c' t-value="t_c+line.credit"/>
+
+                                                </td >
+                                                <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    <t t-set='bal' t-value="bal+line.debit-line.credit"/>
+                                                
+                                                    <span t-esc="'{:0,}'.format(int(float(bal)))"></span>
+                                                    <t t-set='t_b' t-value="t_b+bal"/>
+                                                </td>
+                                            </tr>
+
+                                        </t>
+
+                                        <tr>
+
+
+                                            <td colspan="5" style="font-weight:bold;border-right:hidden;border-left:hidden;text-align:center"><b>Total</b></td>
+
+                                            <td style="font-weight:bold;border-right:hidden;border-left:hidden;text-align:left;padding-left:8px"><b>
+                                                
+                                                <span t-esc="'{:0,}'.format(int(float(t_d)))"></span>
+                                            </b></td>
+
+                                            <td style="font-weight:bold;border-right:hidden;border-left:hidden;text-align:left;padding-left:8px"><b>   
+                                               
+                                                <span t-esc="'{:0,}'.format(int(float(t_c)))"></span>
+                                            </b></td>
+
+                                            <td style="font-weight:bold;border-right:hidden;border-left:;text-align:left;padding-left:8px"><b>
+                                                
+                                                <span t-esc="'{:0,}'.format(int(float(t_b)))"></span>
+                                            </b></td>
+                                        </tr>
+
+                                    </table>
+
+                                </t>
+
+            
+
+                               <!--  <t t-if="num == 'all_acc'">
+
+                                    <t t-foreach="all_acc" t-as="rec">
 
                                         <div class="acc">
+                                            <p1>Account ID: </p1>
                                             <p2>
-                                                <span t-esc="data.code"></span>
+                                                <span t-esc="rec.code"></span>
                                             </p2>
+                                            <p3>Description: </p3>
                                             <p4>
-                                                <span t-esc="data.name"></span>
+                                                <span t-esc="rec.name"></span>
                                             </p4>
                                             <p5>Balance:</p5>
                                             <p6>
-                                                <!-- <span t-esc="get_bal(data.code)"></span> -->
-                                                <span t-esc="'{:0,}'.format(int(float(get_bal(data.code))))"></span>
+                                              
+                                                <span t-esc="'{:0,}'.format(int(float(get_bal(rec.code))))"></span>
                                             </p6>
 
                                         </div>
 
                                         <table width="100%">
-                                            <tr style="backgroud:#ccc;border-top:hidden">
-                                                <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">No</th>
-                                                <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Type</th>
-                                                <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Date</th>
-                                                <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Reference</th>
-                                                <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Detail:</th>
-                                                <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Debit:</th>
-                                                <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Credit:</th>
-                                                <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Balance</th>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Type</th>
+                                                <th>Date</th>
+                                                <th>Reference</th>
+                                                <th>Detail:</th>
+                                                <th>Debit:</th>
+                                                <th>Credit:</th>
+                                                <th>Balance</th>
                                                 
                                             </tr>
-                                            <span t-esc="get_line(data.code)"></span>
-                                            <t t-set='bal' t-value="get_bal(data.code)"/>
+                                            <span t-esc="get_line(rec.code)"></span>
+                                            <t t-set='bal' t-value="get_bal(rec.code)"/>
                                             <t t-set='t_d' t-value="0"/>
                                             <t t-set='t_c' t-value="0"/>
                                             <t t-set='t_b' t-value="0"/>
                                             <t t-foreach="inner" t-as="line">
 
-                                                <tr style="border-right:hidden;border-left:hidden">
-                                                    <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                <tr>
+                                                    <td>
                                                         <span t-esc="line.move_id.name"></span>
                                                     </td>
                                                     <td>JC</td>
-                                                    <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    <td>
                                                         <span t-esc="line.move_id.date"></span>
                                                     </td>
-                                                    <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    <td>
                                                         <span t-esc="line.move_id.ref"></span>
                                                     </td>
-                                                    <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    <td>
                                                         <span t-esc="line.name"></span>
                                                     </td>
-                                                    <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
-                                                        <!-- <span t-esc="line.debit"></span> -->
+                                                    <td>
+                                                   
                                                         <span t-esc="'{:0,}'.format(int(float(line.debit)))"></span>
                                                         <t t-set='t_d' t-value="t_d+line.debit"/>
                                                     </td>
-                                                    <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
-                                                        <!-- <span t-esc="line.credit"></span> -->
-
+                                                    <td>
+                                                      
                                                         <span t-esc="'{:0,}'.format(int(float(line.credit)))"></span>
                                                         <t t-set='t_c' t-value="t_c+line.credit"/>
-                                                    </td >
-                                                    <td style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">
+                                                    </td>
+                                                    <td>
                                                         <t t-set='bal' t-value="bal+line.debit-line.credit"/>
-                                                        <!-- <span t-esc="bal"></span> -->
+                                                     
                                                         <span t-esc="'{:0,}'.format(int(float(bal)))"></span>
                                                         <t t-set='t_b' t-value="t_b+bal"/>
                                                     </td>
@@ -319,153 +443,46 @@
 
                                             <tr>
 
-                                                <!-- <td colspan="3" style="font-weight:bold;border-right:hidden;border-left:hidden;text-align:left"><b>Current Closing Balance:</b></td>
+                                                <td colspan="3"><b>Current Closing Balance:</b></td>
 
-                                                <td style="font-weight:bold;border-right:hidden;border-left:;text-align:left"><b>
+                                                <td><b>
+                                                    
                                                     <span t-esc="'{:0,}'.format(int(float(t_b)))"></span>
                                                 </b></td>
- -->
-                                                <td colspan="5" style="font-weight:bold;border-right:hidden;border-left:hidden;text-align:center"><b>Total</b></td>
 
-                                                <td style="font-weight:bold;border-right:hidden;border-left:hidden;text-align:left;padding-left:8px"><b>
-                                                    <!-- <span t-esc="t_d"></span> -->
+                                                <td><b>Total</b></td>
+
+                                                <td><b>
+                                                    
                                                     <span t-esc="'{:0,}'.format(int(float(t_d)))"></span>
                                                 </b></td>
 
-                                                <td style="font-weight:bold;border-right:hidden;border-left:hidden;text-align:left;padding-left:8px"><b>   
-                                                    <!-- <span t-esc="t_c"></span> -->
-                                                    <span t-esc="'{:0,}'.format(int(float(t_c)))"></span>
+                                                <td><b>   
+                                               
+                                                    <span t-esc="'{:0,}'.format(int(float(t_b)))"></span>
                                                 </b></td>
 
-                                                <td style="font-weight:bold;border-right:hidden;border-left:;text-align:left;padding-left:8px"><b>
-                                                    <!-- <span t-esc="t_b"></span> -->
+                                                <td><b>
+                                                   
                                                     <span t-esc="'{:0,}'.format(int(float(t_b)))"></span>
                                                 </b></td>
                                             </tr>
+
 
                                         </table>
 
                                     </t>
 
-                
+                                </t> -->
 
-                                   <!--  <t t-if="num == 'all_acc'">
+                                <br class="clearfloat"/>
 
-                                        <t t-foreach="all_acc" t-as="rec">
-
-                                            <div class="acc">
-                                                <p1>Account ID: </p1>
-                                                <p2>
-                                                    <span t-esc="rec.code"></span>
-                                                </p2>
-                                                <p3>Description: </p3>
-                                                <p4>
-                                                    <span t-esc="rec.name"></span>
-                                                </p4>
-                                                <p5>Balance:</p5>
-                                                <p6>
-                                                  
-                                                    <span t-esc="'{:0,}'.format(int(float(get_bal(rec.code))))"></span>
-                                                </p6>
-
-                                            </div>
-
-                                            <table width="100%">
-                                                <tr>
-                                                    <th>No</th>
-                                                    <th>Type</th>
-                                                    <th>Date</th>
-                                                    <th>Reference</th>
-                                                    <th>Detail:</th>
-                                                    <th>Debit:</th>
-                                                    <th>Credit:</th>
-                                                    <th>Balance</th>
-                                                    
-                                                </tr>
-                                                <span t-esc="get_line(rec.code)"></span>
-                                                <t t-set='bal' t-value="get_bal(rec.code)"/>
-                                                <t t-set='t_d' t-value="0"/>
-                                                <t t-set='t_c' t-value="0"/>
-                                                <t t-set='t_b' t-value="0"/>
-                                                <t t-foreach="inner" t-as="line">
-
-                                                    <tr>
-                                                        <td>
-                                                            <span t-esc="line.move_id.name"></span>
-                                                        </td>
-                                                        <td>JC</td>
-                                                        <td>
-                                                            <span t-esc="line.move_id.date"></span>
-                                                        </td>
-                                                        <td>
-                                                            <span t-esc="line.move_id.ref"></span>
-                                                        </td>
-                                                        <td>
-                                                            <span t-esc="line.name"></span>
-                                                        </td>
-                                                        <td>
-                                                       
-                                                            <span t-esc="'{:0,}'.format(int(float(line.debit)))"></span>
-                                                            <t t-set='t_d' t-value="t_d+line.debit"/>
-                                                        </td>
-                                                        <td>
-                                                          
-                                                            <span t-esc="'{:0,}'.format(int(float(line.credit)))"></span>
-                                                            <t t-set='t_c' t-value="t_c+line.credit"/>
-                                                        </td>
-                                                        <td>
-                                                            <t t-set='bal' t-value="bal+line.debit-line.credit"/>
-                                                         
-                                                            <span t-esc="'{:0,}'.format(int(float(bal)))"></span>
-                                                            <t t-set='t_b' t-value="t_b+bal"/>
-                                                        </td>
-                                                    </tr>
-
-                                                </t>
-
-                                                <tr>
-
-                                                    <td colspan="3"><b>Current Closing Balance:</b></td>
-
-                                                    <td><b>
-                                                        
-                                                        <span t-esc="'{:0,}'.format(int(float(t_b)))"></span>
-                                                    </b></td>
-
-                                                    <td><b>Total</b></td>
-
-                                                    <td><b>
-                                                        
-                                                        <span t-esc="'{:0,}'.format(int(float(t_d)))"></span>
-                                                    </b></td>
-
-                                                    <td><b>   
-                                                   
-                                                        <span t-esc="'{:0,}'.format(int(float(t_b)))"></span>
-                                                    </b></td>
-
-                                                    <td><b>
-                                                       
-                                                        <span t-esc="'{:0,}'.format(int(float(t_b)))"></span>
-                                                    </b></td>
-                                                </tr>
-
-
-                                            </table>
-
-                                        </t>
-
-                                    </t> -->
-
-                                    <br class="clearfloat"/>
-
-                                </div>
-    
                             </div>
 
                         </div>
 
-                    </t>
+                    </div>
+
 
                 </t>
             </t>

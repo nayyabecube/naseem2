@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <report
+            id="report_for_customer_minimum_sale" 
+            model="account.invoice"
+            name="customer_minimum_sale.customer_report"
+            file="customer_minimum_sale.customer_report"
+            report_type="qweb-html"
+            string="Customer Minimum Sale"
+            menu="False"/>
+            
+
+         <record id="customer_lowselling_wizard_form_view" model="ir.ui.view">
+            <field name="name">customer_lowselling_wizard_form_view</field>
+            <field name="model">customer.lowselling</field>
+            <field name="arch" type="xml">
+                <form string="Report">
+                    <group name="group_top">
+                        <group name="group_left"> 
+                            
+                            <field name="date"/>
+
+                        </group>
+
+                        <group name="group_right">
+                        
+
+                        </group>
+                        
+                    </group>
+
+                    <footer>
+                        <button name="%(report_for_customer_minimum_sale)d" type="action" string="Print" class="oe_highlight"/>
+                    </footer>
+                
+                </form>
+                
+                    
+            </field>
+        </record>
+
+        <record id="lowselling_customer_reports_wizard" model="ir.actions.act_window">
+            <field name="name">Customer Minimum Sale</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">customer.lowselling</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="customer_lowselling_wizard_form_view"/>
+            <field name="target">new</field> 
+        </record>
+
+
+        <menuitem name="Customer Minimum Sale" id="lowselling_customer_wise_menu" parent="sales_team.menu_sale_report" action="lowselling_customer_reports_wizard"/> 
+
+
+        <record id="customer_form_view" model="ir.ui.view"> 
+            <field name="name">customer_form_view</field> 
+            <field name="model">res.partner</field> 
+            <field name="inherit_id" ref="base.view_partner_form"/> 
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='lang']" position="after">
+                  <field name="minimum_sale" />
+                  <field name="associated_days" />
+                </xpath>
+
+            </field> 
+        </record>      
+
+    </data>
+</openerp>
+
+

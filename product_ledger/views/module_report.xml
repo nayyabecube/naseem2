@@ -73,6 +73,7 @@
                                     text-transform: capitalize;
                                 }
                                 table tr td {
+                                    border-top: 1px solid #ddd;
                                     text-align: left;
                                     padding: 5px 0px;
                                     font-size: 15px;
@@ -163,15 +164,15 @@
                                     <div class="product_info">
 
                                         <p class="lefter">
-                                            <span class="solid">Product Code:</span>
+                                            <span style="font-weight:bold" class="solid">Product Code:</span>
                                             <span class="liquid" t-esc="o.default_code"></span>
                                         </p>
                                         <p class="righter">
-                                            <span class="solid">Product Description:</span>
+                                            <span style="font-weight:bold" class="solid">Product Description:</span>
                                             <span class="liquid" t-esc="o.name"></span>
                                         </p>
                                         <p class="fuller">
-                                            <span class="solid">Opening Balance:</span>
+                                            <span style="font-weight:bold" class="solid">Opening Balance:</span>
                                             <!-- <t t-set="open_bal" t-value="100500000" /> -->
                                             <span class="liquid" t-esc="get_open()"></span>
                                         </p>
@@ -191,6 +192,8 @@
                                             <th>Qty Out</th>
                                             <th>Balance</th>
                                         </tr>
+
+                                        <t t-set='bal' t-value="get_open()"/>
                                         <t t-set="product" t-value="o.id"/>
                                         <t t-foreach="required_invoices" t-as="data">
                                             <tr>
@@ -233,9 +236,12 @@
                                                 <!-- <td><span t-esc="data.reference"></span></td> -->
                                                 <!-- <td><span t-esc="data.partner_id.name"></span></td> -->
                                                 <td>
+
                                                     <t t-foreach="data.move_id.picking_id.account_inv_id.invoice_line_ids" t-as="line">
-                                                        <t t-if="line.product_id.id == 'product'">
-                                                            <span t-esc="line.price_unit"></span>
+
+                                                        <t t-if="line.product_id.id == product">
+                                                            <span></span>
+                                                            <span t-esc="'{:0,}'.format(int(float(line.price_unit)))"></span>
                                                         </t>
                                                     </t>
                                                 </td>
@@ -270,7 +276,12 @@
                                                     </t>
                                                 </td>
 
-                                                <td>-</td>
+                                                <td>
+                                                    <t t-set='bal' t-value="bal+data.quantity"/>
+
+                                                    <span t-esc="'{:0,}'.format(int(float(bal)))"></span>
+
+                                                </td>
                                                <!--  <td>
                                                     <t t-if="type == 'out_invoice'">
                                                         <t t-set="open_bal" t-value="open_bal - line_data(data,'qty')" />
@@ -291,7 +302,17 @@
                                                 </td> -->
                                                 
                                             </tr> 
+
+                                            
                                         </t>
+
+                                            <tr style="border-top: 2px solid #666">
+
+                                                <td colspan="10" style="font-weight:bold;border-right:hidden;border-left:hidden;text-align:center"><b></b></td>
+
+
+                                            </tr>
+
                                     </table>
 
                                     <div class="stock">
@@ -312,7 +333,7 @@
                                         <p>
                                             <span class="solid">Last Buying Date:</span>
                                             <!-- <span class="liquid" t-esc="get_price()[1]"></span> -->
-                                            <span class="liquid" t-esc="time.strftime('%d-%m-%Y',time.strptime(get_price()[1],'%Y-%m-%d %H:%M:%S'))"/>
+                                            <span class="liquid" t-esc="get_price()[1]"/>
                                             <!-- <span class="liquid" t-esc="last_quantity('date')"></span> -->
                                         </p>
 

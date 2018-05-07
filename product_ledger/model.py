@@ -66,6 +66,9 @@ class SampleDevelopmentReport(models.AbstractModel):
             if x.product_id == product:
                 required_invoices.append(x)
 
+
+
+
         def get_tot():
             amt = 0
             for x in invoices:
@@ -116,6 +119,7 @@ class SampleDevelopmentReport(models.AbstractModel):
                             amt = x.quantity
                         if x.date == new:
                             l_date = x.date
+                            
 
             return amt,l_date,pcs,value
 

@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+    <data>   
+
+        <template id="sale_order_report_report">
+
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                    <t t-foreach="docs" t-as="o">
+
+                        <div class="page">
+
+                            <style>
+
+                                @media (min-width: 992px) {
+                                    .container {
+                                        width: 100%;
+                                    }
+                                }
+                                @media (min-width: 768px) {
+                                    .container {
+                                        width: 100%;
+                                    }
+                                }
+                                .container {
+                                    width: 100%;
+                                }
+                                body {
+                                    margin: 0px !important;
+                                }
+                                body.o_in_iframe {
+                                    margin-top: 0px!important;
+                                }
+                                .header,
+                                .footer {
+                                    display: none !important;
+                                }
+                                    .main-data {
+                                        width: 100%;
+                                    }
+                                    .centered {
+                                        width: 1000px;
+                                        margin: auto;
+                                    }
+                                    .logo {
+                                        width: 10%;
+                                        float: left;
+                                    }
+                                    .logo img {
+                                        margin: 20px 20px 20px 20px;
+                                    }
+                                    .address {
+                                        width: 25%;
+                                        float: right;
+                                        margin: 15px 0px 15px 0px;
+                                    }
+                                    .address p {
+                                        text-align: right;
+                                    }
+                                    .clearfloat {
+                                        clear: both;
+                                        float: none;
+                                    }
+                                    .invoice {
+                                        width: 100%;
+                                        border-top: 2px solid dimgrey;
+                                        border-bottom: 2px solid dimgrey;
+                                        height: 192px;
+                                        background-color: gainsboro;
+                                    }
+                                    .invoice-to {
+                                        width: 50%;
+                                        float: left;
+                                        margin-top: 5px;
+                                    }
+                                    .invoice-to p {
+                                        margin-left: 20px;
+                                        margin-top: 5px;
+                                        margin-bottom: 5px;
+                                    }
+                                    .invoice-no {
+                                        width: 35%;
+                                        float: right;
+                                        background-color: mediumvioletred;
+                                        margin: 10px 20px 0px 0px;
+                                        color: aliceblue;
+
+                                    }
+                                    .invoice-no p {
+                                        margin-left: 10px;
+                                        padding: 3px;
+                                    }
+                                    .solid {
+                                        font-weight: bold;
+                                        margin-right: 5px;
+                                    }
+                                    table, td, th {
+                                        border: 1px solid dimgrey;
+                                        border-collapse: collapse;
+                                        padding: 8px;
+                                        margin: 10px 0px 10px 0px;
+                                    }
+                                    .invoice-no .liquid {
+                                        text-align: justify;
+                                    }
+                                    
+                                    table th {
+                                        background-color: mediumvioletred;
+                                        color: white;
+                                        border: 1px solid;
+                                    }
+                                    .termed {
+                                        margin: 40px 0px 40px 0px;
+                                    }
+                                    .bordered {
+                                        border-bottom: 1px solid dimgrey;
+                                    }
+                                    .no-margin {
+                                        margin-top: 0px;
+                                        margin-bottom: 0px;
+                                    }
+
+                                    h2 {
+
+                                        width: 40%;
+                                        margin: 0px auto;
+                                        text-align: center;
+                                        text-decoration: underline;
+
+                                    }
+
+
+                            </style>
+
+                                <div class="main-data">
+                                    <div class="centered">
+
+                                        <h2>
+                                            <span t-esc="get_name()"></span>
+                                        </h2>
+
+                                        <div class="logo">
+                                            <img src="/customer_invoice_report/static/src/img/logo.png" style="width:100px; height: 100px; "/>
+                                        </div>
+
+                                        <div class="address">
+                                            <p class="no-margin">
+                                                <span class="solid"></span>
+                                                <span class="liquid">Your Company</span>
+                                            </p>
+
+                                            <p class="no-margin">
+                                                <span class="solid"></span>
+                                                <span class="liquid">300 Auto Shop</span>
+                                            </p>
+
+                                            <p class="no-margin">
+                                                <span class="solid"></span>
+                                                <span class="liquid">John Doe Main Street ,</span>
+                                            </p>
+
+                                            <p class="no-margin">
+                                                <span class="solid">State:</span>
+                                                <span class="liquid">Chicago, IL 60621</span>
+                                            </p>
+
+                                            <p class="no-margin">
+                                                <span class="solid">Mobile</span>
+                                                <span class="liquid"> 0300-6000234</span>
+                                            </p>
+
+                                            <p class="no-margin">
+                                                <span class="solid">E-Mail</span>
+                                                <span class="liquid">enterprisecube@gmail.com</span>
+                                            </p>
+
+                                        </div>
+
+                                        <br class="clearfloat"/>
+
+                                        <div class="invoice">
+
+                                            <div class="invoice-to">
+                                                <p class="no-margin">
+                                                    <span class="solid">Order To:</span>
+                                                    <span class="liquid" t-esc="o.partner_id.name"></span>
+
+                                                </p>
+                                                <!-- <p class="no-margin">
+                                                    <span class="solid">Associate Dean for feculty Dev</span>
+
+                                                </p> -->
+                                                <!-- <p class="no-margin">
+                                                    <span class="solid"></span>
+                                                    <span class="liquid">College of Natural Science</span>
+                                                </p> -->
+
+                                                <p>
+                                                    <span class="solid">Country</span>
+                                                    <span class="liquid" t-esc="o.partner_id.street"></span>
+                                                </p>
+
+                                               <!--  <p>
+                                                    <span class="solid">State/Province</span>
+                                                    <span class="liquid">California</span>
+                                                </p> -->
+
+                                                <p class="no-margin">
+                                                    <span class="solid">Email:</span>
+                                                    <span class="liquid" t-esc="o.partner_id.email"></span>
+                                                </p>
+
+                                            </div>
+
+                                            <div class="invoice-no">
+                                                <p>
+                                                    <span class="solid">Order No:</span>
+                                                    <span class="liquid" style="float: right;width: 100px;" t-esc="o.name"></span>
+                                                </p>
+
+                                            </div>
+
+                                            <div class="invoice-no">
+
+                                                <!--  <p class="no-margin"> 
+                                                    <span class="solid">Invoice Date:</span>
+                                                    <span class="liquid" style="float: right;width: 100px;" t-esc="o.date_invoice"></span>
+                                                </p>
+
+                                                <p class="no-margin">
+                                                    <span class="solid">SO:</span>
+                                                    <span class="liquid" style="float: right;width: 100px;" t-esc="o.source"></span>
+                                                </p>
+ -->
+                                                <p class="no-margin">
+
+                                                    <span class="solid">Order Date:</span>
+                                                    <span class="liquid" style="float: right;width: 100px;" t-esc="o.date_order"></span>
+                                                </p>
+
+                                                <p></p>
+                                                <p class="no-margin">
+                                                    <span class="solid">Due Date:</span>
+                                                    <!-- <span class="liquid" style="float: right;width: 100px;" t-esc="o.date_due"></span> -->
+                                                </p>
+                                            </div>
+                                            
+                                        </div>
+
+                                        <table width="100%" class="table-1">
+
+                                            <tr>
+                                                <th>Sr.</th>
+                                                <th>Description</th>
+                                                <th>Quantity</th>
+                                                <th>Unit Price</th>
+                                                <th>Taxes</th>
+                                                <th>Price</th>
+                                            </tr>
+
+                                            <t t-set="sr_no" t-value="0" />
+                                            <t t-foreach="o.order_line" t-as="data">
+
+                                                <t t-set="sr_no" t-value="sr_no + 1" />
+                                                <tr>
+                                                    <td>
+                                                        <span t-esc="sr_no"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="data.product_id.name"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="'{0:,.2f}'.format(float(data.product_uom_qty))"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="'{0:,.2f}'.format(float(data.price_unit))"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span>----</span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="'{0:,.2f}'.format(float(data.price_subtotal))"></span>
+                                                    </td>
+                                                </tr>
+
+                                            </t>
+
+                                        </table>
+
+                                        <table class="calendar_table" style="width: 35%;float: right;padding-right: 10px;">
+                                            <tr style="border-top: hidden;border-left: hidden;border-right: hidden;">
+                                                <td>
+                                                    <span class="solid">Sub Total</span>
+                                                </td>
+                                                <td style="border-left: hidden;">
+                                                    <span class="liquid taxes" t-esc="'{0:,.2f}'.format(float(o.amount_total))"></span>
+                                                </td>
+                                                
+                                            </tr>
+
+                                            <tr style="border-left: hidden;border-right: hidden;">
+                                                <td>
+                                                    <span class="solid">Taxes</span>
+                                                </td>
+                                                <td style="border-left: hidden;">
+                                                    <span class="liquid taxes">0.00</span>
+                                                </td>
+                                                
+                                            </tr>
+                                            <tr style="border-bottom: hidden;border-left: hidden;border-right: hidden;">
+                                                <td>
+                                                    <span class="solid">TOTAL</span>
+                                                </td>
+                                                <td style="border-left: hidden;">
+                                                    <span class="liquid taxes" t-esc="'{0:,.2f}'.format(float(o.amount_total))"></span>
+                                                </td>
+                                                
+                                            </tr>
+
+                                        </table>
+
+                                        <br class="clearfloat"/>
+
+                                        <div class="bordered"></div>
+
+                                        <!-- <h3>Payment History</h3> -->
+
+                                      <!--   <table width="100%">
+
+                                            <tr>
+                                                <th>Sr.</th>
+                                                <th>Date</th>
+                                                <th>Method</th>
+                                                <th>Ref</th>
+                                                <th>Amount</th>
+
+                                            </tr>
+
+                                            <t t-set="sr_no" t-value="0" />
+                                            <t t-foreach="o.pay_tree_id" t-as="data2">
+                                                
+                                                <t t-set="sr_no" t-value="sr_no + 1" />
+                                                <tr>
+                                                    <td>
+                                                        <span t-esc="sr_no"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="data2.date"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span></span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="data2.pay_id.reference"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="'{0:,.2f}'.format(floats(data2.amount))"></span>
+                                                    </td>
+                                    
+                                                </tr>
+                                            </t>
+
+                                        </table>
+ -->
+                                        <div class="termed">
+
+                                            <p>
+                                                <span class="solid">&#8226; Payment Term:</span>
+                                                <span class="liquid" t-esc="o.payment_term_id.name"></span>
+
+                                            </p>
+                                            <p>
+                                                <span class="solid">&#8226; Comment:</span>
+                                                <span class="liquid">---</span>
+
+                                            </p>
+                                            <p>
+                                                <span class="solid">&#8226; Fiscal Position Remark:</span>
+                                                <span class="liquid">---</span>
+
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                        </div><!--end of page-->
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

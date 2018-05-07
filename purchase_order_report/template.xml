@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <report
+            id="purchase_order_report" 
+            model="purchase.order"
+            name="purchase_order_report.purchase_order_report_report"
+            file="purchase_order_report.purchase_order_report_report"
+            report_type="qweb-html"
+            string="Purchase Invoice"/> 
+    </data>
+</openerp>

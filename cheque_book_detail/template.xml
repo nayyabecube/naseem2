@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <report
+            id="report_for_chequebook" 
+            model="check.book.maintain"
+            name="cheque_book_detail.customer_report"
+            file="cheque_book_detail.customer_report"
+            report_type="qweb-html"
+            string="Check Book Details"
+            menu="False"/>
+            
+
+         <record id="chequebook_wizard_form_view" model="ir.ui.view">
+            <field name="name">chequebook_wizard_form_view</field>
+            <field name="model">chequebook.detail</field>
+            <field name="arch" type="xml">
+                <form string="Report">
+                    <group name="group_top">
+                        <group name="group_left"> 
+                            
+                            <field name="date_from"/>
+                         
+
+                        </group>
+
+                        <group name="group_right">
+                            
+                            <field name="date_to"/>
+                            
+                        </group>
+                        
+                    </group>
+                    <footer>
+                        <button name="%(report_for_chequebook)d" type="action" string="Print" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="chequebook_reports_wizard" model="ir.actions.act_window">
+            <field name="name">Check Book Details</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">chequebook.detail</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="chequebook_wizard_form_view"/>
+            <field name="target">new</field> 
+        </record>
+
+
+        <menuitem name="Check Book Details" id="chequebook_wise_menu" parent="sales_team.menu_sale_report" action="chequebook_reports_wizard"/>       
+
+    </data>
+</openerp>
+
+
