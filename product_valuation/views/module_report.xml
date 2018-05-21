@@ -119,7 +119,7 @@
                                         <tr style="backgroud:#ccc;border-top:hidden">
                                             <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Product ID</th>
                                             <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Description</th>
-                                            <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Uom</th>
+                                            <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">UOM</th>
                                             <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">In Stock Unit</th>
                                             <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">Cost Price</th>
                                             <th style="text-align:left;padding-left:8px;border-right:hidden;border-left:hidden">List Price</th>

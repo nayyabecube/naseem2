@@ -102,9 +102,9 @@ class SampleDevelopmentReport(models.AbstractModel):
                         datelist = sorted(l_date, key=lambda x: x.date_invoice)
                         new = datelist.pop().date_invoice
             for data in sale:
-                for line in data.invoice_line_ids:
-                    if attr == line.product_id.name:
-                        if data.id == name and data.date_invoice == new:
+                if data.id == name and data.date_invoice == new:
+                    for line in data.invoice_line_ids:
+                        if attr == line.product_id.id:
                             value = line.last_sale 
 
             return value
